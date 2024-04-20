@@ -1,0 +1,11 @@
+fabricApi {
+    configureDataGeneration()
+}
+
+repositories {
+    maven { url = "https://jitpack.io" }
+}
+
+dependencies {
+    include modImplementation("com.github.Karashok-Leo:L2Serial-Fabricated:-SNAPSHOT")
+}

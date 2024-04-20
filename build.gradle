@@ -1,0 +1,96 @@
+plugins {
+    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'maven-publish'
+}
+
+base {
+    archivesName = mod_id
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 17
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.base.archivesName.get()}" }
+    }
+}
+
+allprojects {
+    apply plugin: "fabric-loom"
+
+    group = project.group + "." + base.archivesName
+    version = project.mod_version
+
+    repositories {
+    }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${project.minecraft_version}"
+        mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+        modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+        modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    }
+
+    java {
+        withSourcesJar()
+
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    processResources {
+    }
+
+    jar.from(rootProject.file("LICENSE")) // copy license file into jar
+}
+
+subprojects {
+    apply plugin: "maven-publish"
+
+    project.archivesBaseName=rootProject.archivesBaseName + "-" + project.name
+
+    loom {
+        mods.register(project.archivesBaseName) {
+            sourceSet sourceSets.main
+        }
+        File aw = file("src/main/resources/${project.archivesBaseName}.accesswidener")
+        if (aw.exists())
+            accessWidenerPath.set(aw)
+    }
+
+    processResources {
+
+        into("assets/${rootProject.archivesBaseName}") {
+            from(rootProject.file("src/main/resources/assets/${rootProject.archivesBaseName}/icon.png"))
+        }
+        into("./") {
+            from(rootProject.file("src/main/resources/fabric.mod.json"))
+        }
+
+        Map<String, ?> properties = [
+                mod_id           : project.archivesBaseName,
+                version          : version,
+                java_version     : java.sourceCompatibility,
+                minecraft_version: minecraft_version,
+        ]
+
+        properties.forEach(inputs::property)
+
+        filesMatching("fabric.mod.json") {
+            expand properties
+        }
+    }
+
+    publishing {
+        publications {
+            create("mavenJava", MavenPublication) {
+                from components.java
+            }
+        }
+
+        repositories {
+        }
+    }
+}
