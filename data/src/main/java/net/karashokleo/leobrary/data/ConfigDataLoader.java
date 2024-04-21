@@ -47,7 +47,7 @@ public abstract class ConfigDataLoader<T> implements SimpleSynchronousResourceRe
             {
                 InputStream stream = resourceRef.getInputStream();
                 JsonObject data = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
-                load(Objects.requireNonNull(JsonCodec.from(data, cls, null)));
+                load(id, Objects.requireNonNull(JsonCodec.from(data, cls, null)));
             } catch (Exception e)
             {
                 error(id, e);
@@ -57,5 +57,5 @@ public abstract class ConfigDataLoader<T> implements SimpleSynchronousResourceRe
 
     protected abstract void clear();
 
-    protected abstract void load(T config);
+    protected abstract void load(Identifier id, T config);
 }

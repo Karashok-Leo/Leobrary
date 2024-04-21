@@ -64,9 +64,12 @@ subprojects {
         into("assets/${rootProject.archivesBaseName}") {
             from(rootProject.file("src/main/resources/assets/${rootProject.archivesBaseName}/icon.png"))
         }
-        into("./") {
-            from(rootProject.file("src/main/resources/fabric.mod.json"))
-        }
+
+        File meta = project.file("src/main/resources/fabric.mod.json")
+        if (!meta.exists())
+            into("./") {
+                from(rootProject.file("src/main/resources/fabric.mod.json"))
+            }
 
         Map<String, ?> properties = [
                 mod_id           : project.archivesBaseName,
