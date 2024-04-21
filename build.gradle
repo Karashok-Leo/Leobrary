@@ -3,6 +3,8 @@ plugins {
     id 'maven-publish'
 }
 
+group = group_id + "." + mod_id
+
 base {
     archivesName = mod_id
 }
@@ -20,7 +22,6 @@ jar {
 allprojects {
     apply plugin: "fabric-loom"
 
-    group = project.group + "." + base.archivesName
     version = project.mod_version
 
     repositories {
@@ -40,16 +41,14 @@ allprojects {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    processResources {
-    }
-
     jar.from(rootProject.file("LICENSE")) // copy license file into jar
 }
 
 subprojects {
     apply plugin: "maven-publish"
 
-    project.archivesBaseName=rootProject.archivesBaseName + "-" + project.name
+    project.group = rootProject.group + "." + project.name
+    project.archivesBaseName = rootProject.archivesBaseName + "-" + project.name
 
     loom {
         mods.register(project.archivesBaseName) {
