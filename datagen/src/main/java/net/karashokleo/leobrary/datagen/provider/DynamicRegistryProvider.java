@@ -2,31 +2,27 @@ package net.karashokleo.leobrary.datagen.provider;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
+import net.karashokleo.leobrary.datagen.generator.DynamicRegistryGenerator;
 import net.minecraft.registry.RegistryWrapper;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+@Deprecated
 public class DynamicRegistryProvider extends FabricDynamicRegistryProvider
 {
-    private static final List<Consumer<FabricDynamicRegistryProvider.Entries>> consumers = new ArrayList<>();
+    private final DynamicRegistryGenerator consumers;
 
-    public static void add(Consumer<FabricDynamicRegistryProvider.Entries> consumer)
-    {
-        consumers.add(consumer);
-    }
-
-    public DynamicRegistryProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture)
+    public DynamicRegistryProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture, DynamicRegistryGenerator consumers)
     {
         super(output, registriesFuture);
+        this.consumers = consumers;
     }
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup registries, FabricDynamicRegistryProvider.Entries entries)
     {
-        for (Consumer<Entries> consumer : consumers)
+        for (Consumer<Entries> consumer : consumers.getConsumers())
             consumer.accept(entries);
     }
 

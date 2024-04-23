@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class ConfigDataProvider implements DataProvider
+public abstract class AbstractDataProvider implements DataProvider
 {
     protected final FabricDataOutput output;
     private final String name;
     private final List<ConfigEntry<?>> entryList = new ArrayList<>();
 
-    public ConfigDataProvider(FabricDataOutput output, String name)
+    public AbstractDataProvider(FabricDataOutput output, String name)
     {
         this.output = output;
         this.name = name;

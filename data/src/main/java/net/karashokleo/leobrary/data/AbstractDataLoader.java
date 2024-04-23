@@ -13,13 +13,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-public abstract class ConfigDataLoader<T> implements SimpleSynchronousResourceReloadListener
+public abstract class AbstractDataLoader<T> implements SimpleSynchronousResourceReloadListener
 {
     private final String path;
     private final Class<T> cls;
     private final Logger LOGGER;
 
-    protected ConfigDataLoader(String path, Class<T> cls)
+    protected AbstractDataLoader(String path, Class<T> cls)
     {
         this.path = path;
         this.cls = cls;

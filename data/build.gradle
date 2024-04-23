@@ -1,7 +1,6 @@
 repositories {
-    maven { url = "https://jitpack.io" }
 }
 
 dependencies {
-    include modImplementation("com.github.Karashok-Leo:L2Serial-Fabricated:-SNAPSHOT")
+    include modImplementation("dev.xkmc.l2serial:L2Serial:1.2.2")
 }

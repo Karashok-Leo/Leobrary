@@ -2,31 +2,33 @@ package net.karashokleo.leobrary.datagen.provider.tag;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.karashokleo.leobrary.datagen.util.TagContainer;
+import net.karashokleo.leobrary.datagen.generator.TagGenerator;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
+@Deprecated
 public class EnchantmentTagProvider extends FabricTagProvider.EnchantmentTagProvider
 {
-    public static final TagContainer<Enchantment> CONTAINER = new TagContainer<>();
+    private final TagGenerator<Enchantment> container;
 
-    public EnchantmentTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture)
+    public EnchantmentTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture, TagGenerator<Enchantment> container)
     {
         super(output, completableFuture);
+        this.container = container;
     }
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg)
     {
-        for (var entry : CONTAINER.getEntries().entrySet())
+        for (var entry : container.getEntries().entrySet())
         {
             var builder = getOrCreateTagBuilder(entry.getKey());
             for (var value : entry.getValue())
                 builder.add(value);
         }
-        for (var entry : CONTAINER.getTags().entrySet())
+        for (var entry : container.getTags().entrySet())
         {
             var builder = getOrCreateTagBuilder(entry.getKey());
             for (var value : entry.getValue())

@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 public class RecipeGenUtil
 {
     private static final Ingredient TEMPLATE_PLACEHOLDER = Ingredient.EMPTY;

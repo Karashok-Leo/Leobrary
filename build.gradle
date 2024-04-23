@@ -25,6 +25,7 @@ allprojects {
     version = project.mod_version
 
     repositories {
+        mavenLocal()
     }
 
     dependencies {
@@ -47,7 +48,7 @@ allprojects {
 subprojects {
     apply plugin: "maven-publish"
 
-    project.group = rootProject.group + "." + project.name
+    project.group = rootProject.group
     project.archivesBaseName = rootProject.archivesBaseName + "-" + project.name
 
     loom {
@@ -93,6 +94,7 @@ subprojects {
         }
 
         repositories {
+            mavenLocal()
         }
     }
 }
