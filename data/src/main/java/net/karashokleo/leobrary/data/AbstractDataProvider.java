@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 public abstract class AbstractDataProvider implements DataProvider
 {
     protected final FabricDataOutput output;

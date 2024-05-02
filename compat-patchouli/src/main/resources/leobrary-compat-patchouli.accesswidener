@@ -1,0 +1,8 @@
+accessWidener   v1  named
+accessible method net/minecraft/data/server/recipe/ShapedRecipeJsonBuilder validate (Lnet/minecraft/util/Identifier;)V
+accessible field net/minecraft/data/server/recipe/ShapedRecipeJsonBuilder advancementBuilder Lnet/minecraft/advancement/Advancement$Builder;
+accessible field net/minecraft/data/server/recipe/ShapedRecipeJsonBuilder inputs Ljava/util/Map;
+accessible field net/minecraft/data/server/recipe/ShapedRecipeJsonBuilder pattern Ljava/util/List;
+accessible method net/minecraft/data/server/recipe/ShapelessRecipeJsonBuilder validate (Lnet/minecraft/util/Identifier;)V
+accessible field net/minecraft/data/server/recipe/ShapelessRecipeJsonBuilder advancementBuilder Lnet/minecraft/advancement/Advancement$Builder;
+accessible field net/minecraft/data/server/recipe/ShapelessRecipeJsonBuilder inputs Ljava/util/List;

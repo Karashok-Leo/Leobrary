@@ -10,4 +10,5 @@ pluginManagement {
 }
 include 'data'
 include 'datagen'
+include 'compat-patchouli'
 

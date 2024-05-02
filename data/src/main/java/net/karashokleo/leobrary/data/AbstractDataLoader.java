@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public abstract class AbstractDataLoader<T> implements SimpleSynchronousResourceReloadListener
 {
     private final String path;
@@ -24,12 +25,6 @@ public abstract class AbstractDataLoader<T> implements SimpleSynchronousResource
         this.path = path;
         this.cls = cls;
         this.LOGGER = LoggerFactory.getLogger(cls.getName());
-    }
-
-    @Override
-    public Identifier getFabricId()
-    {
-        return null;
     }
 
     public void error(Identifier id, Exception e)
@@ -47,7 +42,12 @@ public abstract class AbstractDataLoader<T> implements SimpleSynchronousResource
             {
                 InputStream stream = resourceRef.getInputStream();
                 JsonObject data = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
-                load(id, Objects.requireNonNull(JsonCodec.from(data, cls, null)));
+                load(
+                        id.withPath(s -> s
+                                .replaceFirst(path + "/", "")
+                                .replaceFirst(".json", "")),
+                        Objects.requireNonNull(JsonCodec.from(data, cls, null))
+                );
             } catch (Exception e)
             {
                 error(id, e);

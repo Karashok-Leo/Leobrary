@@ -3,6 +3,7 @@ package net.karashokleo.leobrary.datagen.generator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.block.Block;
 import net.minecraft.data.client.*;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -41,6 +42,11 @@ public class ModelGenerator
     public void addBlock(Consumer<BlockStateModelGenerator> consumer)
     {
         blocks.add(consumer);
+    }
+
+    public void addBlock(Block block)
+    {
+        addBlock(generator -> generator.registerSimpleCubeAll(block));
     }
 
     public void generate(FabricDataGenerator.Pack pack)

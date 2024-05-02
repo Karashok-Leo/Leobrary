@@ -1,0 +1,11 @@
+repositories {
+    maven { url = "https://maven.blamejared.com" }
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/leobrary-compat-patchouli.accesswidener")
+}
+
+dependencies {
+    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+}

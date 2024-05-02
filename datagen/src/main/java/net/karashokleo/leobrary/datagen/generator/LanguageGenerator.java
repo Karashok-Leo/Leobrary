@@ -3,6 +3,7 @@ package net.karashokleo.leobrary.datagen.generator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -44,6 +45,11 @@ public class LanguageGenerator
     public void addItem(Item item, String s)
     {
         texts.put(item::getTranslationKey, s);
+    }
+
+    public void addBlock(Block block, String s)
+    {
+        texts.put(block::getTranslationKey, s);
     }
 
     public void addEffect(StatusEffect effect, String s)
