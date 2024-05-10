@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.karashokleo.leobrary.effect.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "LivingEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1,
+    "maxShiftBy": 3
+  }
+}
