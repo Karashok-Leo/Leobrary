@@ -1,3 +1,7 @@
+loom {
+    accessWidenerPath = file("src/main/resources/leobrary-effect.accesswidener")
+}
+
 repositories {
 }
 

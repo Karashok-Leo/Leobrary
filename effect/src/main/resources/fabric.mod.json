@@ -14,7 +14,8 @@
   "mixins": [
     "leobrary-effect.mixins.json"
   ],
-  "license": "CC0-1.0",
+  "accessWidener" : "leobrary-effect.accesswidener",
+  "license": "LGPLv2.1",
   "icon": "assets/leobrary/icon.png",
   "environment": "*",
   "depends": {

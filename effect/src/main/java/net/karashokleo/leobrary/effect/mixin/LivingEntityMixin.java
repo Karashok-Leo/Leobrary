@@ -1,7 +1,5 @@
 package net.karashokleo.leobrary.effect.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.karashokleo.leobrary.effect.api.event.*;
@@ -11,10 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -23,19 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Iterator;
-import java.util.Map;
-import java.util.function.Predicate;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity
 {
-    @Shadow
-    @Final
-    private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
-
-    @Shadow
-    protected abstract void onStatusEffectRemoved(StatusEffectInstance effect);
-
     protected LivingEntityMixin(EntityType<?> type, World world)
     {
         super(type, world);
@@ -95,33 +81,19 @@ public abstract class LivingEntityMixin extends Entity
 //    }
 
     // NYI
-//    @WrapOperation(
-//            method = "clearStatusEffects",
-//            at = @At(
-//                    value = "INVOKE",
-//                    target = "Lnet/minecraft/entity/LivingEntity;onStatusEffectRemoved(Lnet/minecraft/entity/effect/StatusEffectInstance;)V"
-//            )
-//    )
-//    private void onEffectClear(LivingEntity instance, StatusEffectInstance effect, Operation<Void> original, @Share("effectInstance") LocalRef<StatusEffectInstance> effectInstanceRef)
-//    {
-//        original.call(instance, effectInstanceRef.get());
-//    }
-
-    // NYI
-//    @Inject(
-//            method = "tickStatusEffects",
-//            at = @At(
-//                    value = "INVOKE",
-//                    target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.BY,
-//                    by = 3
-//            ),
-//            cancellable = true,
-//            locals = LocalCapture.CAPTURE_FAILHARD
-//    )
-//    private void onEffectExpired(CallbackInfo ci, Iterator<StatusEffect> iterator, StatusEffect statusEffect, StatusEffectInstance statusEffectInstance)
-//    {
-//        EffectExpired.EVENT.invoker().onEffectExpired((LivingEntity) (Object) this, statusEffectInstance, ci);
-//    }
+    @Inject(
+            method = "tickStatusEffects",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Ljava/util/Iterator;remove()V"
+            ),
+            cancellable = true,
+            locals = LocalCapture.CAPTURE_FAILHARD
+    )
+    private void onEffectExpired(CallbackInfo ci, Iterator<StatusEffect> iterator, StatusEffect statusEffect, StatusEffectInstance statusEffectInstance)
+    {
+        EffectExpired.EVENT.invoker().onEffectExpired((LivingEntity) (Object) this, statusEffectInstance, ci);
+    }
 
     @Inject(
             method = "heal",
@@ -148,25 +120,4 @@ public abstract class LivingEntityMixin extends Entity
     {
         return amountRef.get();
     }
-
-    // NYI
-//    @Unique
-//    public boolean cureStatusEffects(Predicate<StatusEffectInstance> predicate)
-//    {
-//        if (this.getWorld().isClient)
-//            return false;
-//        Iterator<StatusEffectInstance> iterator = this.activeStatusEffects.values().iterator();
-//        boolean bl = false;
-//        while (iterator.hasNext())
-//        {
-//            StatusEffectInstance effectInstance = iterator.next();
-//            if (predicate.test(effectInstance))
-//            {
-//                this.onStatusEffectRemoved(effectInstance);
-//                iterator.remove();
-//                bl = true;
-//            }
-//        }
-//        return bl;
-//    }
 }
