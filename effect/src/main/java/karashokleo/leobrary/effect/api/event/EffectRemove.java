@@ -1,11 +1,10 @@
-package net.karashokleo.leobrary.effect.api.event;
+package karashokleo.leobrary.effect.api.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import org.jetbrains.annotations.ApiStatus;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @ApiStatus.Experimental

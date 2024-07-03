@@ -66,7 +66,7 @@ public class DynamicTagGenerator<T> implements CustomGenerator
                 {
                     var builder = getOrCreateTagBuilder(entry.getKey());
                     for (var value : entry.getValue())
-                        builder.addTag(value);
+                        builder.addOptionalTag(value.id());
                 }
             }
         });

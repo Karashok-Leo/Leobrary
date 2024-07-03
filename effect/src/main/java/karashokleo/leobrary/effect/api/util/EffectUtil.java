@@ -1,6 +1,6 @@
-package net.karashokleo.leobrary.effect.api.util;
+package karashokleo.leobrary.effect.api.util;
 
-import net.karashokleo.leobrary.effect.api.event.EffectAdded;
+import karashokleo.leobrary.effect.api.event.EffectAdded;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;

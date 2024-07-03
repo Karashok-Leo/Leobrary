@@ -1,15 +1,14 @@
 {
 	"schemaVersion": 1,
 	"id": "${mod_id}",
-	"version": "${version}",
-	"name": "Leobrary",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"version": "${mod_version}",
+	"name": "${mod_name}",
+	"description": "A library for my personal use.",
 	"authors": [
-		"Me!"
+		"Karashok-Leo"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/Karashok-Leo/Leobrary"
 	},
 	"license": "LGPLv2.1",
 	"icon": "assets/leobrary/icon.png",

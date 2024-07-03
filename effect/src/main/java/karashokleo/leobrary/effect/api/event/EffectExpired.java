@@ -1,4 +1,4 @@
-package net.karashokleo.leobrary.effect.api.event;
+package karashokleo.leobrary.effect.api.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

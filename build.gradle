@@ -74,7 +74,8 @@ subprojects {
 
         Map<String, ?> properties = [
                 mod_id           : project.archivesBaseName,
-                version          : version,
+                mod_version      : version,
+                mod_name         : mod_name + "-" + project.name,
                 java_version     : java.sourceCompatibility,
                 minecraft_version: minecraft_version,
         ]

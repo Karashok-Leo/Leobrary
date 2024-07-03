@@ -20,7 +20,11 @@
     "fabric-api": "*"
   },
   "mixins": [
-    "leobrary-effect.mixins.json"
+    "leobrary-damage.mixins.json"
   ],
-  "accessWidener" : "leobrary-effect.accesswidener"
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/class_1282": ["karashokleo/leobrary/damage/api/DefaultDamageStateProvider"]
+    }
+  }
 }

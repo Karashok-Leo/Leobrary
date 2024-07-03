@@ -1,8 +1,8 @@
-package net.karashokleo.leobrary.effect.mixin;
+package karashokleo.leobrary.effect.mixin;
 
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import net.karashokleo.leobrary.effect.api.event.*;
+import karashokleo.leobrary.effect.api.event.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

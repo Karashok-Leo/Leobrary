@@ -1,4 +1,4 @@
-package net.karashokleo.leobrary.effect.api.util;
+package karashokleo.leobrary.effect.api.util;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
