@@ -1,4 +1,4 @@
-package karashokleo.leobrary.damage.api;
+package karashokleo.leobrary.damage.api.state;
 
 public interface DamageState<T>
 {

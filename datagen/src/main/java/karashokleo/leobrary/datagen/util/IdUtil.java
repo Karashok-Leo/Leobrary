@@ -56,6 +56,13 @@ public class IdUtil
         this.prefixes.pop();
     }
 
+    public void pushAndPop(String prefix, Runnable generate)
+    {
+        this.pushPrefix(prefix);
+        generate.run();
+        this.popPrefix();
+    }
+
     public IdUtil clearPath()
     {
         this.path = "";

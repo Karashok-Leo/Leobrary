@@ -1,11 +1,11 @@
 package karashokleo.leobrary.datagen.builder;
 
 import karashokleo.leobrary.datagen.generator.BlockLootGenerator;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import karashokleo.leobrary.datagen.generator.LanguageGenerator;
 import karashokleo.leobrary.datagen.generator.ModelGenerator;
 import karashokleo.leobrary.datagen.generator.TagGenerator;
 import karashokleo.leobrary.datagen.util.StringUtil;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -60,6 +60,12 @@ public abstract class BlockBuilder<T extends Block> extends NamedEntryBuilder<T>
         return new BlockSet(content, item);
     }
 
+    public BlockBuilder<T> addItem(BlockItem item)
+    {
+        this.item = item;
+        return this;
+    }
+
     public BlockBuilder<T> addSimpleItem()
     {
         return addSimpleItem(new FabricItemSettings());
@@ -67,8 +73,7 @@ public abstract class BlockBuilder<T extends Block> extends NamedEntryBuilder<T>
 
     public BlockBuilder<T> addSimpleItem(Item.Settings itemSetting)
     {
-        this.item = new BlockItem(content, itemSetting);
-        return this;
+        return addItem(new BlockItem(content, itemSetting));
     }
 
     public BlockBuilder<T> addModel()

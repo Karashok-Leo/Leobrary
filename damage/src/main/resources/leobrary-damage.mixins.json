@@ -3,7 +3,8 @@
   "package": "karashokleo.leobrary.damage.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "DamageSourceMixin"
+    "DamageSourceMixin",
+    "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

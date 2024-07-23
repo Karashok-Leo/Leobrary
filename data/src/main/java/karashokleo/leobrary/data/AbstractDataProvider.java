@@ -17,22 +17,22 @@ import java.util.concurrent.CompletableFuture;
 public abstract class AbstractDataProvider implements DataProvider
 {
     protected final FabricDataOutput output;
-    private final String name;
+    private final String midPath;
     private final List<ConfigEntry<?>> entryList = new ArrayList<>();
 
-    public AbstractDataProvider(FabricDataOutput output, String name)
+    public AbstractDataProvider(FabricDataOutput output, String midPath)
     {
         this.output = output;
-        this.name = name;
+        this.midPath = midPath;
     }
 
-    public abstract void add();
+    public abstract void addAll();
 
     public <T> void add(Identifier id, T config)
     {
         entryList.add(
                 new ConfigEntry<>(
-                        "data/" + id.getNamespace() + "/" + name + "/" + id.getPath() + ".json",
+                        "data/" + id.getNamespace() + "/" + midPath + "/" + id.getPath() + ".json",
                         config
                 )
         );
@@ -42,7 +42,7 @@ public abstract class AbstractDataProvider implements DataProvider
     public CompletableFuture<?> run(DataWriter writer)
     {
         Path folder = output.getPath();
-        add();
+        addAll();
         List<CompletableFuture<?>> list = new ArrayList<>();
         entryList.forEach(entry ->
         {

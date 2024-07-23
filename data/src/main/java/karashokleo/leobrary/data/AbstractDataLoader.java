@@ -13,21 +13,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
+/**
+ * 实际路径 /data/namespace/config/sub_config/path.json
+ * 设置 mid_path = "config/sub_config"
+ *
+ * @param <T>
+ */
 @SuppressWarnings("unused")
 public abstract class AbstractDataLoader<T> implements SimpleSynchronousResourceReloadListener
 {
-    /*
-    如路径 /data/namespace/config/sub_config/path.json
-                          ^^^^^^^^^^^^^^^^^
-    设置 mid_path = "config/sub_config"
-     */
-    private final String mid_path;
+    private final String midPath;
     private final Class<T> cls;
     private final Logger LOGGER;
 
-    protected AbstractDataLoader(String mid_path, Class<T> cls)
+    protected AbstractDataLoader(String midPath, Class<T> cls)
     {
-        this.mid_path = mid_path;
+        this.midPath = midPath;
         this.cls = cls;
         this.LOGGER = LoggerFactory.getLogger(cls.getName());
     }
@@ -41,7 +42,7 @@ public abstract class AbstractDataLoader<T> implements SimpleSynchronousResource
     public void reload(ResourceManager manager)
     {
         clear();
-        manager.findResources(mid_path, id -> id.getPath().endsWith(".json")).forEach((id, resourceRef) ->
+        manager.findResources(midPath, id -> id.getPath().endsWith(".json")).forEach((id, resourceRef) ->
         {
             try
             {
@@ -49,7 +50,7 @@ public abstract class AbstractDataLoader<T> implements SimpleSynchronousResource
                 JsonObject data = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonObject();
                 load(
                         id.withPath(s -> s
-                                .replaceFirst(mid_path + "/", "")
+                                .replaceFirst(midPath + "/", "")
                                 .replaceFirst(".json", "")),
                         Objects.requireNonNull(JsonCodec.from(data, cls, null))
                 );
@@ -62,9 +63,10 @@ public abstract class AbstractDataLoader<T> implements SimpleSynchronousResource
 
     protected abstract void clear();
 
-    /*
-    此处传入的 id 为处理后的
-    即 namespace:path
+    /**
+     * @param id     id = namespace:path ;
+     *               实际路径 = namespace:config/sub_config/path.json
+     * @param config config
      */
     protected abstract void load(Identifier id, T config);
 }

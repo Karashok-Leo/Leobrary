@@ -40,58 +40,49 @@ public class RecipeTemplate
         return crafting(ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, output, count), item);
     }
 
-    public static void storage(Consumer<RecipeJsonProvider> exporter, MaterialSet set)
+    public static void storage(Consumer<RecipeJsonProvider> exporter, MaterialSet set, IdUtil idUtil)
     {
-        storage(exporter, set.nugget(), set.ingot(), set.blockSet().item(), "");
+        storage(exporter, set.nugget(), set.ingot(), set.blockSet().item(), idUtil);
     }
 
-    public static void storage(Consumer<RecipeJsonProvider> exporter, MaterialSet set, String prefix)
+    public static void storage(Consumer<RecipeJsonProvider> exporter, ItemConvertible nugget, ItemConvertible ingot, ItemConvertible block, IdUtil idUtil)
     {
-        storage(exporter, set.nugget(), set.ingot(), set.blockSet().item(), prefix);
+        storage(exporter, nugget, ingot, idUtil);
+        storage(exporter, ingot, block, idUtil);
     }
 
-    public static void storage(Consumer<RecipeJsonProvider> exporter, ItemConvertible nugget, ItemConvertible ingot, ItemConvertible block)
+    public static void storage(Consumer<RecipeJsonProvider> exporter, ItemConvertible from, ItemConvertible to, IdUtil idUtil)
     {
-        storage(exporter, nugget, ingot, block, "");
+        compose(exporter, from, to, idUtil.path(to).get("_compose"));
+        decompose(exporter, to, from, idUtil.path(to).get("_decompose"));
     }
 
-    public static void storage(Consumer<RecipeJsonProvider> exporter, ItemConvertible nugget, ItemConvertible ingot, ItemConvertible block, String prefix)
+    public static void storage(Consumer<RecipeJsonProvider> exporter, ItemConvertible from, ItemConvertible to, Identifier composeId, Identifier decomposeId)
     {
-        storage(exporter, nugget, ingot, prefix);
-        storage(exporter, ingot, block, prefix);
+        compose(exporter, from, to, composeId);
+        decompose(exporter, to, from, decomposeId);
     }
 
-    public static void storage(Consumer<RecipeJsonProvider> exporter, ItemConvertible from, ItemConvertible to)
+    public static void compose(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output, Identifier composeId)
     {
-        storage(exporter, from, to, "");
-    }
-
-    public static void storage(Consumer<RecipeJsonProvider> exporter, ItemConvertible from, ItemConvertible to, String prefix)
-    {
-        shaped(to, 1, from.asItem())
+        shaped(output, 1, input.asItem())
                 .pattern("XXX")
                 .pattern("XXX")
                 .pattern("XXX")
-                .input('X', from)
-                .offerTo(
-                        exporter,
-                        IdUtil.getItemId(to.asItem())
-                                .withPrefixedPath(prefix)
-                                .withSuffixedPath("_storage")
-                );
-        shapeless(from, 9, to.asItem())
-                .input(to)
-                .offerTo(
-                        exporter,
-                        IdUtil.getItemId(to.asItem())
-                                .withPrefixedPath(prefix)
-                                .withSuffixedPath("_unpack")
-                );
+                .input('X', input)
+                .offerTo(exporter, composeId);
     }
 
-    public static void smithing(Consumer<RecipeJsonProvider> exporter, TagKey<Item> in, Item mat, Item out)
+    public static void decompose(Consumer<RecipeJsonProvider> exporter, ItemConvertible input, ItemConvertible output, Identifier decomposeId)
     {
-        smithing(exporter, in, mat, out, IdUtil.getItemId(out));
+        shapeless(output, 9, input.asItem())
+                .input(input)
+                .offerTo(exporter, decomposeId);
+    }
+
+    public static void smithing(Consumer<RecipeJsonProvider> exporter, TagKey<Item> in, Item mat, Item out, IdUtil idUtil)
+    {
+        smithing(exporter, in, mat, out, idUtil.get(out));
     }
 
     public static void smithing(Consumer<RecipeJsonProvider> exporter, TagKey<Item> in, Item mat, Item out, Identifier id)
@@ -100,9 +91,9 @@ public class RecipeTemplate
                 .offerTo(exporter, id);
     }
 
-    public static void smithing(Consumer<RecipeJsonProvider> exporter, Item in, Item mat, Item out)
+    public static void smithing(Consumer<RecipeJsonProvider> exporter, Item in, Item mat, Item out, IdUtil idUtil)
     {
-        smithing(exporter, in, mat, out, IdUtil.getItemId(out));
+        smithing(exporter, in, mat, out, idUtil.get(out));
     }
 
     public static void smithing(Consumer<RecipeJsonProvider> exporter, Item in, Item mat, Item out, Identifier id)
@@ -111,9 +102,9 @@ public class RecipeTemplate
                 .offerTo(exporter, id);
     }
 
-    public static void smelting(Consumer<RecipeJsonProvider> exporter, Item source, Item result, float experience)
+    public static void smelting(Consumer<RecipeJsonProvider> exporter, Item source, Item result, float experience, IdUtil idUtil)
     {
-        smelting(exporter, source, result, experience, IdUtil.getItemId(source));
+        smelting(exporter, source, result, experience, idUtil.get(source));
     }
 
     public static void smelting(Consumer<RecipeJsonProvider> exporter, Item source, Item result, float experience, Identifier id)
@@ -122,9 +113,9 @@ public class RecipeTemplate
                 .offerTo(exporter, id);
     }
 
-    public static void blasting(Consumer<RecipeJsonProvider> exporter, Item source, Item result, float experience)
+    public static void blasting(Consumer<RecipeJsonProvider> exporter, Item source, Item result, float experience, IdUtil idUtil)
     {
-        blasting(exporter, source, result, experience, IdUtil.getItemId(source));
+        blasting(exporter, source, result, experience, idUtil.get(source));
     }
 
     public static void blasting(Consumer<RecipeJsonProvider> exporter, Item source, Item result, float experience, Identifier id)

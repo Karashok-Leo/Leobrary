@@ -1,9 +1,10 @@
-package karashokleo.leobrary.damage.api;
+package karashokleo.leobrary.damage.api.state;
 
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.TagKey;
 
+@SuppressWarnings("unused")
 public interface DefaultDamageStateProvider extends DamageStateProvider
 {
     default void addState(TagKey<DamageType> tag)

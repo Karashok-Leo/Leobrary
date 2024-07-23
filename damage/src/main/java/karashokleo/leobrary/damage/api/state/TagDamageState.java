@@ -1,4 +1,4 @@
-package karashokleo.leobrary.damage.api;
+package karashokleo.leobrary.damage.api.state;
 
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.tag.TagKey;
