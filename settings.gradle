@@ -13,4 +13,5 @@ include 'datagen'
 include 'compat-patchouli'
 include 'effect'
 include 'damage'
+include 'gui'
 

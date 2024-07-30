@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "A library for my personal use.",
+  "authors": [
+    "Karashok-Leo"
+  ],
+  "contact": {
+    "sources": "https://github.com/Karashok-Leo/Leobrary"
+  },
+  "license": "LGPLv2.1",
+  "icon": "assets/leobrary/icon.png",
+  "environment": "*",
+  "depends": {
+    "java": ">=17",
+    "minecraft": "~${minecraft_version}",
+    "fabricloader": "*",
+    "fabric-api": "*"
+  },
+  "mixins": [
+    "leobrary-gui.mixins.json"
+  ]
+}
