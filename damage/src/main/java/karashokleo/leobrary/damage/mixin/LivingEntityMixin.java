@@ -19,7 +19,7 @@ public abstract class LivingEntityMixin
             ),
             argsOnly = true
     )
-    private float inject_applyDamage_shieldPhase(float amount, @Local(argsOnly = true) DamageSource source)
+    private float inject_damage_shieldPhase(float amount, @Local(argsOnly = true) DamageSource source)
     {
         return DamagePhase.SHIELD.getFinalAmount((LivingEntity) (Object) this, source, amount);
     }
@@ -78,4 +78,20 @@ public abstract class LivingEntityMixin
     {
         return DamagePhase.APPLY.getFinalAmount((LivingEntity) (Object) this, source, amount);
     }
+
+    /*
+    Trying to control knockback
+    @ModifyExpressionValue(
+            method = "damage",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/damage/DamageSource;isIn(Lnet/minecraft/registry/tag/TagKey;)Z",
+                    ordinal = 7
+            )
+    )
+    private boolean inject_damage_noKnockBack(boolean original, @Local(argsOnly = true) DamageSource source)
+    {
+        return original || source.isIn(DamageTypeTags.NO_KNOCKBACK);
+    }
+    */
 }

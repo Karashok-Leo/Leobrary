@@ -1,10 +1,17 @@
 package karashokleo.leobrary.damage.api.modify;
 
+import com.google.common.collect.ImmutableList;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.util.math.Vec3d;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 public enum DamagePhase
 {
@@ -38,24 +45,90 @@ public enum DamagePhase
      */
     APPLY;
 
-    private final Map<Integer, ConditionalDamageModifier> MODIFIERS = new TreeMap<>();
+    private final Map<Integer, Consumer<DamageAccess>> MODIFIERS = new TreeMap<>();
 
-    public void registerModifier(int priority, DamageModifier modifier, ModifyCondition condition)
+    public void registerModifier(int priority, Consumer<DamageAccess> modifier)
     {
         while (MODIFIERS.containsKey(priority))
             priority++;
-        MODIFIERS.put(priority, new ConditionalDamageModifier(modifier, condition));
+        MODIFIERS.put(priority, modifier);
     }
 
     public float getFinalAmount(LivingEntity entity, DamageSource source, float amount)
     {
-        for (ConditionalDamageModifier conditional : MODIFIERS.values())
-            if (conditional.condition().shouldModify(entity, source, amount))
-                amount = conditional.modifier().modify(amount);
-        return amount;
+        DamageAccessImpl conditional = new DamageAccessImpl(entity, source, amount);
+        for (Consumer<DamageAccess> consumer : MODIFIERS.values())
+            consumer.accept(conditional);
+        return conditional.getModifiedDamage(amount);
     }
 
-    public record ConditionalDamageModifier(DamageModifier modifier, ModifyCondition condition)
+    record DamageAccessImpl(
+            LivingEntity entity,
+            DamageSource source,
+            float originalAmount,
+            List<DamageModifier> modifiers
+    ) implements DamageAccess
     {
+        public DamageAccessImpl(LivingEntity entity, DamageSource source, float originalDamage)
+        {
+            this(entity, source, originalDamage, new ArrayList<>());
+        }
+
+        @Override
+        public void addModifier(DamageModifier modifier)
+        {
+            this.modifiers.add(modifier);
+        }
+
+        @Override
+        public LivingEntity getEntity()
+        {
+            return this.entity;
+        }
+
+        @Override
+        public DamageSource getSource()
+        {
+            return this.source;
+        }
+
+        @Override
+        public Entity getAttacker()
+        {
+            return this.source.getAttacker();
+        }
+
+        @Override
+        public DamageType getDamageType()
+        {
+            return this.source.getType();
+        }
+
+        @Override
+        public Vec3d getPosition()
+        {
+            return this.source.getPosition();
+        }
+
+        @Override
+        public float getOriginalDamage()
+        {
+            return this.originalAmount;
+        }
+
+        @Override
+        public float getModifiedDamage(float amount)
+        {
+            for (DamageModifier modifier : this.modifiers)
+                amount = modifier.modify(amount);
+            return amount;
+        }
+
+        @Deprecated
+        @Override
+        public List<DamageModifier> modifiers()
+        {
+            return ImmutableList.copyOf(modifiers);
+        }
     }
 }

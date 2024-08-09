@@ -5,21 +5,13 @@ public interface DamageModifier
 {
     float modify(float originalDamage);
 
-    record Add(float operator) implements DamageModifier
+    static DamageModifier add(float operator)
     {
-        @Override
-        public float modify(float originalDamage)
-        {
-            return originalDamage + operator;
-        }
+        return originalDamage -> originalDamage + operator;
     }
 
-    record Multiply(float operator) implements DamageModifier
+    static DamageModifier multiply(float operator)
     {
-        @Override
-        public float modify(float originalDamage)
-        {
-            return originalDamage * operator;
-        }
+        return originalDamage -> originalDamage * operator;
     }
 }

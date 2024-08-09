@@ -16,12 +16,12 @@ public abstract class NamedEntryBuilder<T>
 
     public Identifier getId()
     {
-        return new Identifier(getNameSpace(), name);
+        return new Identifier(this.getNameSpace(), name);
     }
 
     public String getTranslationKey(String prefix)
     {
-        return getId().toTranslationKey(prefix);
+        return this.getId().toTranslationKey(prefix);
     }
 
     protected abstract String getNameSpace();

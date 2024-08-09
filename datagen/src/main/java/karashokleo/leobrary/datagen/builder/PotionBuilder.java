@@ -149,7 +149,7 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
     {
         if (getEnglishGenerator() == null)
             throw new UnsupportedOperationException();
-        getEnglishGenerator().addText("item." + getNameSpace() + ".potion.effect." + name, en);
+        getEnglishGenerator().addText("item.minecraft.potion.effect." + name, en);
         return this;
     }
 
@@ -157,7 +157,7 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
     {
         if (getChineseGenerator() == null)
             throw new UnsupportedOperationException();
-        getChineseGenerator().addText("item." + getNameSpace() + ".potion.effect." + name, zh);
+        getChineseGenerator().addText("item.minecraft.potion.effect." + name, zh);
         return this;
     }
 
@@ -170,7 +170,7 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
     {
         if (getEnglishGenerator() == null)
             throw new UnsupportedOperationException();
-        getEnglishGenerator().addText("item." + getNameSpace() + ".splash_potion.effect." + name, en);
+        getEnglishGenerator().addText("item.minecraft.splash_potion.effect." + name, en);
         return this;
     }
 
@@ -178,7 +178,7 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
     {
         if (getChineseGenerator() == null)
             throw new UnsupportedOperationException();
-        getChineseGenerator().addText("item." + getNameSpace() + ".splash_potion.effect." + name, zh);
+        getChineseGenerator().addText("item.minecraft.splash_potion.effect." + name, zh);
         return this;
     }
 
@@ -191,7 +191,7 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
     {
         if (getEnglishGenerator() == null)
             throw new UnsupportedOperationException();
-        getEnglishGenerator().addText("item." + getNameSpace() + ".lingering_potion.effect." + name, en);
+        getEnglishGenerator().addText("item.minecraft.lingering_potion.effect." + name, en);
         return this;
     }
 
@@ -199,7 +199,7 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
     {
         if (getChineseGenerator() == null)
             throw new UnsupportedOperationException();
-        getChineseGenerator().addText("item." + getNameSpace() + ".lingering_potion.effect." + name, zh);
+        getChineseGenerator().addText("item.minecraft.lingering_potion.effect." + name, zh);
         return this;
     }
 
@@ -212,7 +212,7 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
     {
         if (getEnglishGenerator() == null)
             throw new UnsupportedOperationException();
-        getEnglishGenerator().addText("item." + getNameSpace() + ".tipped_arrow.effect." + name, en);
+        getEnglishGenerator().addText("item.minecraft.tipped_arrow.effect." + name, en);
         return this;
     }
 
@@ -220,7 +220,7 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
     {
         if (getChineseGenerator() == null)
             throw new UnsupportedOperationException();
-        getChineseGenerator().addText("item." + getNameSpace() + ".tipped_arrow.effect." + name, zh);
+        getChineseGenerator().addText("item.minecraft.tipped_arrow.effect." + name, zh);
         return this;
     }
 }

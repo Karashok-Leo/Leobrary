@@ -25,12 +25,23 @@ public class IdUtil
     }
 
     private String namespace;
+
     private final Stack<String> prefixes = new Stack<>();
     private String path = "";
 
     public IdUtil(String namespace)
     {
         this.namespace = namespace;
+    }
+
+    public String getNamespace()
+    {
+        return namespace;
+    }
+
+    public String getPath()
+    {
+        return path;
     }
 
     public void setNamespace(String namespace)

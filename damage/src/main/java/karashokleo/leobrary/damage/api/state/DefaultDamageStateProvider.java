@@ -53,9 +53,4 @@ public interface DefaultDamageStateProvider extends DamageStateProvider
     {
         addState(DamageTypeTags.BYPASSES_INVULNERABILITY);
     }
-
-    default void setNoImpact()
-    {
-        addState(DamageTypeTags.NO_IMPACT);
-    }
 }
