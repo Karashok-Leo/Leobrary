@@ -17,6 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 @Mixin(DamageSource.class)
 public abstract class DamageSourceMixin implements DefaultDamageStateProvider
@@ -40,17 +44,43 @@ public abstract class DamageSourceMixin implements DefaultDamageStateProvider
     )
     private void inject_isIn(TagKey<DamageType> tag, CallbackInfoReturnable<Boolean> cir)
     {
-        boolean flag = false;
-        for (DamageState<?> state : this.getStates())
-            if (state.get() == tag)
-                flag = true;
         // Is it going too far?
-        cir.setReturnValue(flag);
+        cir.setReturnValue(this.hasState(state -> state.get() == tag));
     }
 
     @Override
-    public ArrayList<DamageState<?>> getStates()
+    public Collection<DamageState<?>> getStates()
     {
-        return damageStates;
+        return Collections.unmodifiableCollection(this.damageStates);
+    }
+
+    @Override
+    public boolean hasState(Predicate<DamageState<?>> predicate)
+    {
+        return damageStates.stream().anyMatch(predicate);
+    }
+
+    @Override
+    public Optional<DamageState<?>> getState(Predicate<DamageState<?>> predicate)
+    {
+        return damageStates.stream().filter(predicate).findFirst();
+    }
+
+    @Override
+    public void addState(DamageState<?> damageState)
+    {
+        damageStates.add(damageState);
+    }
+
+    @Override
+    public void removeState(Predicate<DamageState<?>> predicate)
+    {
+        damageStates.removeIf(predicate);
+    }
+
+    @Override
+    public void clearStates()
+    {
+        damageStates.clear();
     }
 }

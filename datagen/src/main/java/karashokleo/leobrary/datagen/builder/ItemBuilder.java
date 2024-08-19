@@ -1,31 +1,23 @@
 package karashokleo.leobrary.datagen.builder;
 
-import karashokleo.leobrary.datagen.generator.ModelGenerator;
+import karashokleo.leobrary.datagen.builder.provider.DefaultLanguageGeneratorProvider;
+import karashokleo.leobrary.datagen.builder.provider.ModelGeneratorProvider;
+import karashokleo.leobrary.datagen.builder.provider.TagGeneratorProvider;
 import karashokleo.leobrary.datagen.generator.TagGenerator;
-import karashokleo.leobrary.datagen.generator.LanguageGenerator;
 import karashokleo.leobrary.datagen.util.StringUtil;
 import net.minecraft.data.client.Model;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
-public abstract class ItemBuilder<T extends Item> extends NamedEntryBuilder<T>
+public abstract class ItemBuilder<T extends Item>
+        extends NamedEntryBuilder<T>
+        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider<Item>, ModelGeneratorProvider
 {
-    @Nullable
-    public abstract LanguageGenerator getEnglishGenerator();
-
-    @Nullable
-    public abstract LanguageGenerator getChineseGenerator();
-
-    @Nullable
-    public abstract TagGenerator<Item> getTagGenerator();
-
-    @Nullable
-    public abstract ModelGenerator getModelGenerator();
-
     @Nullable
     protected ItemGroupBuilder group;
 
@@ -60,17 +52,13 @@ public abstract class ItemBuilder<T extends Item> extends NamedEntryBuilder<T>
 
     public ItemBuilder<T> addModel()
     {
-        if (getModelGenerator() == null)
-            throw new UnsupportedOperationException();
-        getModelGenerator().addItem(content);
+        this.getModelGenerator().addItem(content);
         return this;
     }
 
     public ItemBuilder<T> addModel(Model model)
     {
-        if (getModelGenerator() == null)
-            throw new UnsupportedOperationException();
-        getModelGenerator().addItem(content, model);
+        this.getModelGenerator().addItem(content, model);
         return this;
     }
 
@@ -81,35 +69,28 @@ public abstract class ItemBuilder<T extends Item> extends NamedEntryBuilder<T>
 
     public ItemBuilder<T> addEN(String en)
     {
-        if (getEnglishGenerator() == null)
-            throw new UnsupportedOperationException();
-        getEnglishGenerator().addItem(content, en);
+        this.getEnglishGenerator().addItem(content, en);
         return this;
     }
 
     public ItemBuilder<T> addZH(String zh)
     {
-        if (getChineseGenerator() == null)
-            throw new UnsupportedOperationException();
-        getChineseGenerator().addItem(content, zh);
+        this.getChineseGenerator().addItem(content, zh);
         return this;
     }
 
     public ItemBuilder<T> addTag(TagKey<Item> key)
     {
-        if (getTagGenerator() == null)
-            throw new UnsupportedOperationException();
-        getTagGenerator().add(key, content);
+        this.getTagGenerator(RegistryKeys.ITEM).add(key, getId());
         return this;
     }
 
     @SafeVarargs
     public final ItemBuilder<T> addTag(TagKey<Item>... keys)
     {
-        if (getTagGenerator() == null)
-            throw new UnsupportedOperationException();
+        TagGenerator<Item> tagGenerator = getTagGenerator(RegistryKeys.ITEM);
         for (TagKey<Item> key : keys)
-            getTagGenerator().add(key, content);
+            tagGenerator.add(key, getId());
         return this;
     }
 }

@@ -1,18 +1,20 @@
 package karashokleo.leobrary.damage.api.state;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 public interface DamageStateProvider
 {
-    ArrayList<DamageState<?>> getStates();
+    Collection<DamageState<?>> getStates();
 
-    default void addState(DamageState<?> damageState)
-    {
-        this.getStates().add(damageState);
-    }
+    boolean hasState(Predicate<DamageState<?>> predicate);
 
-    default void clearStates()
-    {
-        this.getStates().clear();
-    }
+    Optional<DamageState<?>> getState(Predicate<DamageState<?>> predicate);
+
+    void addState(DamageState<?> damageState);
+
+    void removeState(Predicate<DamageState<?>> predicate);
+
+    void clearStates();
 }

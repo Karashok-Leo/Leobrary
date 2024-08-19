@@ -2,5 +2,5 @@ repositories {
 }
 
 dependencies {
-    include modImplementation("dev.xkmc.l2serial:L2Serial:${l2serial_version}")
+    modImplementation("dev.xkmc.l2serial:L2Serial:${l2serial_version}")
 }

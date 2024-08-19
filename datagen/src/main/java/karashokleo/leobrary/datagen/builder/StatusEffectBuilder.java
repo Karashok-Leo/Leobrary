@@ -1,26 +1,19 @@
 package karashokleo.leobrary.datagen.builder;
 
+import karashokleo.leobrary.datagen.builder.provider.DefaultLanguageGeneratorProvider;
+import karashokleo.leobrary.datagen.builder.provider.TagGeneratorProvider;
 import karashokleo.leobrary.datagen.util.StringUtil;
-import karashokleo.leobrary.datagen.generator.TagGenerator;
-import karashokleo.leobrary.datagen.generator.LanguageGenerator;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
-import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
-public abstract class StatusEffectBuilder<T extends StatusEffect> extends NamedEntryBuilder<T>
+public abstract class StatusEffectBuilder<T extends StatusEffect>
+        extends NamedEntryBuilder<T>
+        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider<StatusEffect>
 {
-    @Nullable
-    public abstract LanguageGenerator getEnglishGenerator();
-
-    @Nullable
-    public abstract LanguageGenerator getChineseGenerator();
-
-    @Nullable
-    public abstract TagGenerator<StatusEffect> getTagGenerator();
-
     public StatusEffectBuilder(String name, T content)
     {
         super(name, content);
@@ -38,41 +31,31 @@ public abstract class StatusEffectBuilder<T extends StatusEffect> extends NamedE
 
     public StatusEffectBuilder<T> addEN(String en)
     {
-        if (getEnglishGenerator() == null)
-            throw new UnsupportedOperationException();
-        getEnglishGenerator().addEffect(content, en);
+        this.getEnglishGenerator().addEffect(content, en);
         return this;
     }
 
     public StatusEffectBuilder<T> addENDesc(String en)
     {
-        if (getEnglishGenerator() == null)
-            throw new UnsupportedOperationException();
-        getEnglishGenerator().addEffectDesc(content, en);
+        this.getEnglishGenerator().addEffectDesc(content, en);
         return this;
     }
 
     public StatusEffectBuilder<T> addZH(String zh)
     {
-        if (getChineseGenerator() == null)
-            throw new UnsupportedOperationException();
-        getChineseGenerator().addEffect(content, zh);
+        this.getChineseGenerator().addEffect(content, zh);
         return this;
     }
 
     public StatusEffectBuilder<T> addZHDesc(String zh)
     {
-        if (getChineseGenerator() == null)
-            throw new UnsupportedOperationException();
-        getChineseGenerator().addEffectDesc(content, zh);
+        this.getChineseGenerator().addEffectDesc(content, zh);
         return this;
     }
 
     public StatusEffectBuilder<T> addTag(TagKey<StatusEffect> key)
     {
-        if (getTagGenerator() == null)
-            throw new UnsupportedOperationException();
-        getTagGenerator().add(key, content);
+        this.getTagGenerator(RegistryKeys.STATUS_EFFECT).add(key, getId());
         return this;
     }
 }

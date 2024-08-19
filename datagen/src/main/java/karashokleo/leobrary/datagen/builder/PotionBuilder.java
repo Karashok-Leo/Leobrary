@@ -1,6 +1,6 @@
 package karashokleo.leobrary.datagen.builder;
 
-import karashokleo.leobrary.datagen.generator.LanguageGenerator;
+import karashokleo.leobrary.datagen.builder.provider.DefaultLanguageGeneratorProvider;
 import karashokleo.leobrary.datagen.util.StringUtil;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -11,19 +11,14 @@ import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 @SuppressWarnings("unused")
-public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
+public abstract class PotionBuilder
+        extends NamedEntryBuilder<StatusEffect>
+        implements DefaultLanguageGeneratorProvider
 {
-    @Nullable
-    public abstract LanguageGenerator getEnglishGenerator();
-
-    @Nullable
-    public abstract LanguageGenerator getChineseGenerator();
-
     protected Potion potion;
     protected Potion longPotion;
     protected Potion strongPotion;
@@ -73,8 +68,8 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
 
     public PotionBuilder recipe(Potion input, Item item, Potion output)
     {
-        Objects.requireNonNull(input,"Input potion not yet registered!");
-        Objects.requireNonNull(output,"Output potion not yet registered!");
+        Objects.requireNonNull(input, "Input potion not yet registered!");
+        Objects.requireNonNull(output, "Output potion not yet registered!");
         BrewingRecipeRegistry.registerPotionRecipe(input, item, output);
         return this;
     }
@@ -147,17 +142,13 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
 
     public PotionBuilder addPotionEN(String en)
     {
-        if (getEnglishGenerator() == null)
-            throw new UnsupportedOperationException();
-        getEnglishGenerator().addText("item.minecraft.potion.effect." + name, en);
+        this.getEnglishGenerator().addText("item.minecraft.potion.effect." + name, en);
         return this;
     }
 
     public PotionBuilder addPotionZH(String zh)
     {
-        if (getChineseGenerator() == null)
-            throw new UnsupportedOperationException();
-        getChineseGenerator().addText("item.minecraft.potion.effect." + name, zh);
+        this.getChineseGenerator().addText("item.minecraft.potion.effect." + name, zh);
         return this;
     }
 
@@ -168,17 +159,13 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
 
     public PotionBuilder addSplashEN(String en)
     {
-        if (getEnglishGenerator() == null)
-            throw new UnsupportedOperationException();
-        getEnglishGenerator().addText("item.minecraft.splash_potion.effect." + name, en);
+        this.getEnglishGenerator().addText("item.minecraft.splash_potion.effect." + name, en);
         return this;
     }
 
     public PotionBuilder addSplashZH(String zh)
     {
-        if (getChineseGenerator() == null)
-            throw new UnsupportedOperationException();
-        getChineseGenerator().addText("item.minecraft.splash_potion.effect." + name, zh);
+        this.getChineseGenerator().addText("item.minecraft.splash_potion.effect." + name, zh);
         return this;
     }
 
@@ -189,17 +176,13 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
 
     public PotionBuilder addLingeringEN(String en)
     {
-        if (getEnglishGenerator() == null)
-            throw new UnsupportedOperationException();
-        getEnglishGenerator().addText("item.minecraft.lingering_potion.effect." + name, en);
+        this.getEnglishGenerator().addText("item.minecraft.lingering_potion.effect." + name, en);
         return this;
     }
 
     public PotionBuilder addLingeringZH(String zh)
     {
-        if (getChineseGenerator() == null)
-            throw new UnsupportedOperationException();
-        getChineseGenerator().addText("item.minecraft.lingering_potion.effect." + name, zh);
+        this.getChineseGenerator().addText("item.minecraft.lingering_potion.effect." + name, zh);
         return this;
     }
 
@@ -210,17 +193,13 @@ public abstract class PotionBuilder extends NamedEntryBuilder<StatusEffect>
 
     public PotionBuilder addTippedArrowEN(String en)
     {
-        if (getEnglishGenerator() == null)
-            throw new UnsupportedOperationException();
-        getEnglishGenerator().addText("item.minecraft.tipped_arrow.effect." + name, en);
+        this.getEnglishGenerator().addText("item.minecraft.tipped_arrow.effect." + name, en);
         return this;
     }
 
     public PotionBuilder addTippedArrowZH(String zh)
     {
-        if (getChineseGenerator() == null)
-            throw new UnsupportedOperationException();
-        getChineseGenerator().addText("item.minecraft.tipped_arrow.effect." + name, zh);
+        this.getChineseGenerator().addText("item.minecraft.tipped_arrow.effect." + name, zh);
         return this;
     }
 }

@@ -1,8 +1,10 @@
 package karashokleo.leobrary.datagen.builder;
 
+import karashokleo.leobrary.datagen.builder.provider.BlockLootGeneratorProvider;
+import karashokleo.leobrary.datagen.builder.provider.DefaultLanguageGeneratorProvider;
+import karashokleo.leobrary.datagen.builder.provider.ModelGeneratorProvider;
+import karashokleo.leobrary.datagen.builder.provider.TagGeneratorProvider;
 import karashokleo.leobrary.datagen.generator.BlockLootGenerator;
-import karashokleo.leobrary.datagen.generator.LanguageGenerator;
-import karashokleo.leobrary.datagen.generator.ModelGenerator;
 import karashokleo.leobrary.datagen.generator.TagGenerator;
 import karashokleo.leobrary.datagen.util.StringUtil;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -11,27 +13,15 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
-public abstract class BlockBuilder<T extends Block> extends NamedEntryBuilder<T>
+public abstract class BlockBuilder<T extends Block>
+        extends NamedEntryBuilder<T>
+        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider<Block>, ModelGeneratorProvider, BlockLootGeneratorProvider
 {
-    @Nullable
-    public abstract LanguageGenerator getEnglishGenerator();
-
-    @Nullable
-    public abstract LanguageGenerator getChineseGenerator();
-
-    @Nullable
-    public abstract TagGenerator<Block> getTagGenerator();
-
-    @Nullable
-    public abstract ModelGenerator getModelGenerator();
-
-    @Nullable
-    public abstract BlockLootGenerator getLootGenerator();
-
     @Nullable
     private BlockItem item;
 
@@ -78,9 +68,7 @@ public abstract class BlockBuilder<T extends Block> extends NamedEntryBuilder<T>
 
     public BlockBuilder<T> addModel()
     {
-        if (getModelGenerator() == null)
-            throw new UnsupportedOperationException();
-        getModelGenerator().addBlock(content);
+        this.getModelGenerator().addBlock(content);
         return this;
     }
 
@@ -91,12 +79,11 @@ public abstract class BlockBuilder<T extends Block> extends NamedEntryBuilder<T>
 
     public BlockBuilder<T> addLoot(boolean requireSilkTouch)
     {
-        if (getLootGenerator() == null)
-            throw new UnsupportedOperationException();
+        BlockLootGenerator blockLootGenerator = this.getBlockLootGenerator();
         if (requireSilkTouch)
-            getLootGenerator().addLoot(generator -> generator.addDropWithSilkTouch(content));
+            blockLootGenerator.addLoot(generator -> generator.addDropWithSilkTouch(content));
         else
-            getLootGenerator().addLoot(generator -> generator.addDrop(content));
+            blockLootGenerator.addLoot(generator -> generator.addDrop(content));
         return this;
     }
 
@@ -107,35 +94,28 @@ public abstract class BlockBuilder<T extends Block> extends NamedEntryBuilder<T>
 
     public BlockBuilder<T> addEN(String en)
     {
-        if (getEnglishGenerator() == null)
-            throw new UnsupportedOperationException();
-        getEnglishGenerator().addBlock(content, en);
+        this.getEnglishGenerator().addBlock(content, en);
         return this;
     }
 
     public BlockBuilder<T> addZH(String zh)
     {
-        if (getChineseGenerator() == null)
-            throw new UnsupportedOperationException();
-        getChineseGenerator().addBlock(content, zh);
+        this.getChineseGenerator().addBlock(content, zh);
         return this;
     }
 
     public BlockBuilder<T> addTag(TagKey<Block> key)
     {
-        if (getTagGenerator() == null)
-            throw new UnsupportedOperationException();
-        getTagGenerator().add(key, content);
+        this.getTagGenerator(RegistryKeys.BLOCK).add(key, getId());
         return this;
     }
 
     @SafeVarargs
     public final BlockBuilder<T> addTag(TagKey<Block>... keys)
     {
-        if (getTagGenerator() == null)
-            throw new UnsupportedOperationException();
+        TagGenerator<Block> tagGenerator = this.getTagGenerator(RegistryKeys.BLOCK);
         for (TagKey<Block> key : keys)
-            getTagGenerator().add(key, content);
+            tagGenerator.add(key, getId());
         return this;
     }
 }

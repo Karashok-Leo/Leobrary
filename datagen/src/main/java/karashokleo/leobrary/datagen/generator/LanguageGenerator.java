@@ -19,12 +19,18 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public class LanguageGenerator implements CustomGenerator
 {
+
     private final String languageCode;
     private final Map<Supplier<String>, String> texts = new HashMap<>();
 
     public LanguageGenerator(String languageCode)
     {
         this.languageCode = languageCode;
+    }
+
+    public String getLanguageCode()
+    {
+        return languageCode;
     }
 
     public Map<Supplier<String>, String> getTexts()

@@ -25,6 +25,11 @@ public class DynamicRegistryGenerator<T> implements CustomGenerator
         this.registryKey = registryKey;
     }
 
+    public RegistryKey<Registry<T>> getRegistryKey()
+    {
+        return registryKey;
+    }
+
     public Map<RegistryKey<T>, List<T>> getEntries()
     {
         return entries;

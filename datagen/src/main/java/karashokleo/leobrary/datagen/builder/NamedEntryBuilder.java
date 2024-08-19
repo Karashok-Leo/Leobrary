@@ -1,9 +1,10 @@
 package karashokleo.leobrary.datagen.builder;
 
+import karashokleo.leobrary.datagen.builder.provider.NameSpaceProvider;
 import net.minecraft.util.Identifier;
 
 @SuppressWarnings("unused")
-public abstract class NamedEntryBuilder<T>
+public abstract class NamedEntryBuilder<T> implements NameSpaceProvider
 {
     protected String name;
     protected T content;
@@ -23,6 +24,4 @@ public abstract class NamedEntryBuilder<T>
     {
         return this.getId().toTranslationKey(prefix);
     }
-
-    protected abstract String getNameSpace();
 }
