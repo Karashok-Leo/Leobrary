@@ -34,7 +34,7 @@ public abstract class DamageSourceMixin implements DefaultDamageStateProvider
     )
     private void inject_init(RegistryEntry<DamageType> type, Entity source, Entity attacker, Vec3d position, CallbackInfo ci)
     {
-        type.streamTags().forEach(tagKey -> this.getStates().add(new TagDamageState(tagKey)));
+        type.streamTags().forEach(tagKey -> this.damageStates.add(new TagDamageState(tagKey)));
     }
 
     @Inject(

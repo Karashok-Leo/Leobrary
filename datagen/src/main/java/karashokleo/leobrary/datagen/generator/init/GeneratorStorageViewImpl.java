@@ -1,6 +1,7 @@
 package karashokleo.leobrary.datagen.generator.init;
 
 import karashokleo.leobrary.datagen.generator.*;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -71,7 +72,22 @@ public class GeneratorStorageViewImpl implements GeneratorStorageView
     }
 
     @Override
-    public @Nullable LanguageGenerator getLanguageGenerator(String languageCode)
+    public void generate(FabricDataGenerator.Pack pack)
+    {
+        this.languageGenerators.values().forEach(generator -> generator.generate(pack));
+        this.tagGenerators.values().forEach(generator -> generator.generate(pack));
+        this.dynamicRegistryGenerators.values().forEach(generator -> generator.generate(pack));
+        if (this.modelGenerator != null)
+            this.modelGenerator.generate(pack);
+        if (this.lootGenerator != null)
+            this.lootGenerator.generate(pack);
+        if (this.blockLootGenerator != null)
+            this.blockLootGenerator.generate(pack);
+    }
+
+    @Nullable
+    @Override
+    public LanguageGenerator getLanguageGenerator(String languageCode)
     {
         return languageGenerators.get(languageCode);
     }

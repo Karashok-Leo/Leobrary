@@ -120,7 +120,7 @@ public class TagGenerator<T> implements CustomGenerator
                 getEntries().forEach((tagKey, registryKey) -> getOrCreateTagBuilder(tagKey).add(registryKey));
                 getEntriesOptional().forEach((tagKey, id) -> getOrCreateTagBuilder(tagKey).addOptional(id));
                 getTags().forEach((tagKey, pTagKey) -> getOrCreateTagBuilder(tagKey).addTag(pTagKey));
-                getTagsOptional().forEach((tagKey, id) -> getOrCreateTagBuilder(tagKey).addOptional(id));
+                getTagsOptional().forEach((tagKey, id) -> getOrCreateTagBuilder(tagKey).addOptionalTag(id));
             }
         });
     }
