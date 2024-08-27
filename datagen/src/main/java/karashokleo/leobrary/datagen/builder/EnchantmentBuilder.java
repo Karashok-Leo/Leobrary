@@ -55,7 +55,7 @@ public abstract class EnchantmentBuilder<T extends Enchantment>
 
     public EnchantmentBuilder<T> addTag(TagKey<Enchantment> key)
     {
-        this.getTagGenerator(RegistryKeys.ENCHANTMENT).add(key, getId());
+        this.getTagGenerator(RegistryKeys.ENCHANTMENT).getOrCreateContainer(key).add(getId());
         return this;
     }
 }

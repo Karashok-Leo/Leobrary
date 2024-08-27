@@ -1,5 +1,6 @@
 package karashokleo.leobrary.damage.mixin;
 
+import karashokleo.leobrary.damage.api.event.DamageSourceCreateCallback;
 import karashokleo.leobrary.damage.api.state.DamageState;
 import karashokleo.leobrary.damage.api.state.DefaultDamageStateProvider;
 import karashokleo.leobrary.damage.api.state.TagDamageState;
@@ -30,10 +31,11 @@ public abstract class DamageSourceMixin implements DefaultDamageStateProvider
 
     @Inject(
             method = "<init>(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;)V",
-            at = @At("TAIL")
+            at = @At("RETURN")
     )
     private void inject_init(RegistryEntry<DamageType> type, Entity source, Entity attacker, Vec3d position, CallbackInfo ci)
     {
+        DamageSourceCreateCallback.EVENT.invoker().onDamageSourceCreate(type, source, attacker, position, (DamageSource) (Object) this);
         type.streamTags().forEach(tagKey -> this.damageStates.add(new TagDamageState(tagKey)));
     }
 

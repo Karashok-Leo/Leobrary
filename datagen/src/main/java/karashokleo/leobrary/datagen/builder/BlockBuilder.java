@@ -106,7 +106,7 @@ public abstract class BlockBuilder<T extends Block>
 
     public BlockBuilder<T> addTag(TagKey<Block> key)
     {
-        this.getTagGenerator(RegistryKeys.BLOCK).add(key, getId());
+        this.getTagGenerator(RegistryKeys.BLOCK).getOrCreateContainer(key).add(getId());
         return this;
     }
 
@@ -115,7 +115,7 @@ public abstract class BlockBuilder<T extends Block>
     {
         TagGenerator<Block> tagGenerator = this.getTagGenerator(RegistryKeys.BLOCK);
         for (TagKey<Block> key : keys)
-            tagGenerator.add(key, getId());
+            tagGenerator.getOrCreateContainer(key).add(getId());
         return this;
     }
 }

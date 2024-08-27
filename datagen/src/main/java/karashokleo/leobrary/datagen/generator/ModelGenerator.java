@@ -12,6 +12,7 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused")
 public class ModelGenerator implements CustomGenerator
@@ -36,7 +37,7 @@ public class ModelGenerator implements CustomGenerator
 
     public void addItem(Item item, Model model, String prefix)
     {
-        addItem(generator -> registerWithPrefix(generator, item, model, prefix));
+        addItem(generator -> registerWithTexturePrefix(generator, item, model, prefix));
     }
 
     public void addBlock(Consumer<BlockStateModelGenerator> consumer)
@@ -70,12 +71,27 @@ public class ModelGenerator implements CustomGenerator
         });
     }
 
-    public static void registerWithPrefix(ItemModelGenerator generator, Item item, Model model, String prefix)
+    public static void registerWithTexturePrefix(ItemModelGenerator generator, Item item, Model model, String prefix)
+    {
+        registerWithTexture(generator, item, model, id -> id.withPrefixedPath("item/" + prefix));
+    }
+
+    private static void registerWithTexturePath(ItemModelGenerator generator, Item item, Model model, String texturePath)
+    {
+        registerWithTexture(generator, item, model, id -> id.withPath("item/" + texturePath));
+    }
+
+    private static void registerWithTexture(ItemModelGenerator generator, Item item, Model model, Identifier textureId)
+    {
+        registerWithTexture(generator, item, model, id -> textureId);
+    }
+
+    private static void registerWithTexture(ItemModelGenerator generator, Item item, Model model, UnaryOperator<Identifier> textureIdOperator)
     {
         Identifier id = Registries.ITEM.getId(item);
         model.upload(
                 id.withPrefixedPath("item/"),
-                TextureMap.layer0(id.withPrefixedPath("item/" + prefix)),
+                TextureMap.layer0(textureIdOperator.apply(id)),
                 generator.writer
         );
     }

@@ -81,7 +81,7 @@ public abstract class ItemBuilder<T extends Item>
 
     public ItemBuilder<T> addTag(TagKey<Item> key)
     {
-        this.getTagGenerator(RegistryKeys.ITEM).add(key, getId());
+        this.getTagGenerator(RegistryKeys.ITEM).getOrCreateContainer(key).add(getId());
         return this;
     }
 
@@ -90,7 +90,7 @@ public abstract class ItemBuilder<T extends Item>
     {
         TagGenerator<Item> tagGenerator = getTagGenerator(RegistryKeys.ITEM);
         for (TagKey<Item> key : keys)
-            tagGenerator.add(key, getId());
+            tagGenerator.getOrCreateContainer(key).add(getId());
         return this;
     }
 }

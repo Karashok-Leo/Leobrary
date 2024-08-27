@@ -55,7 +55,7 @@ public abstract class StatusEffectBuilder<T extends StatusEffect>
 
     public StatusEffectBuilder<T> addTag(TagKey<StatusEffect> key)
     {
-        this.getTagGenerator(RegistryKeys.STATUS_EFFECT).add(key, getId());
+        this.getTagGenerator(RegistryKeys.STATUS_EFFECT).getOrCreateContainer(key).add(getId());
         return this;
     }
 }
