@@ -35,7 +35,12 @@ public class ModelGenerator implements CustomGenerator
         addItem(generator -> generator.register(item, model));
     }
 
-    public void addItem(Item item, Model model, String prefix)
+    public void addItemWithTexturePath(Item item, Model model, String path)
+    {
+        addItem(generator -> registerWithTexturePath(generator, item, model, path));
+    }
+
+    public void addItemWithTexturePrefix(Item item, Model model, String prefix)
     {
         addItem(generator -> registerWithTexturePrefix(generator, item, model, prefix));
     }
