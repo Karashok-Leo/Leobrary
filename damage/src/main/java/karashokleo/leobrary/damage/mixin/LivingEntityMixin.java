@@ -14,7 +14,8 @@ public abstract class LivingEntityMixin
     @ModifyVariable(
             method = "damage",
             at = @At(
-                    value = "INVOKE", ordinal = 0,
+                    value = "INVOKE",
+                    ordinal = 0,
                     target = "Lnet/minecraft/entity/LivingEntity;isSleeping()Z"
             ),
             argsOnly = true
@@ -36,7 +37,11 @@ public abstract class LivingEntityMixin
 
     @ModifyVariable(
             method = "modifyAppliedDamage",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"),
+            at = @At(
+                    value = "INVOKE",
+                    ordinal = 0,
+                    target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"
+            ),
             argsOnly = true
     )
     private float inject_applyDamage_effectPhase(float amount, @Local(argsOnly = true) DamageSource source)
@@ -60,7 +65,11 @@ public abstract class LivingEntityMixin
 
     @ModifyVariable(
             method = "applyDamage",
-            at = @At(value = "INVOKE_ASSIGN", ordinal = 0, target = "Lnet/minecraft/entity/LivingEntity;modifyAppliedDamage(Lnet/minecraft/entity/damage/DamageSource;F)F"),
+            at = @At(
+                    value = "INVOKE_ASSIGN",
+                    ordinal = 0,
+                    target = "Lnet/minecraft/entity/LivingEntity;modifyAppliedDamage(Lnet/minecraft/entity/damage/DamageSource;F)F"
+            ),
             argsOnly = true
     )
     private float inject_applyDamage_absorbPhase(float amount, @Local(argsOnly = true) DamageSource source)
