@@ -102,9 +102,7 @@ public abstract class LivingEntityMixin extends Entity
     )
     private void onHeal(float amount, CallbackInfo ci, @Share("amount") LocalRef<Float> amountRef)
     {
-        Float f = amount;
-        LivingHeal.EVENT.invoker().onLivingHeal((LivingEntity) (Object) this, f, ci);
-        amountRef.set(f);
+        LivingHeal.EVENT.invoker().onLivingHeal((LivingEntity) (Object) this, amount, amountRef, ci);
     }
 
     @ModifyVariable(
