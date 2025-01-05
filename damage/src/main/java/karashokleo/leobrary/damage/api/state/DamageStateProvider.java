@@ -6,15 +6,17 @@ import java.util.function.Predicate;
 
 public interface DamageStateProvider
 {
-    Collection<DamageState<?>> getStates();
+    Collection<DamageState> getStates();
 
-    boolean hasState(Predicate<DamageState<?>> predicate);
+    boolean hasState(Predicate<DamageState> predicate);
 
-    Optional<DamageState<?>> getState(Predicate<DamageState<?>> predicate);
+    Optional<DamageState> getState(Predicate<DamageState> predicate);
 
-    void addState(DamageState<?> damageState);
+    <T extends DamageState> Optional<T> getState(Class<T> clazz,Predicate<T> predicate);
 
-    void removeState(Predicate<DamageState<?>> predicate);
+    void addState(DamageState damageState);
+
+    void removeState(Predicate<DamageState> predicate);
 
     void clearStates();
 }

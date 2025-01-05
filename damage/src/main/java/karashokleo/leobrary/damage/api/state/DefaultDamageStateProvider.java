@@ -7,14 +7,14 @@ import net.minecraft.registry.tag.TagKey;
 @SuppressWarnings("unused")
 public interface DefaultDamageStateProvider extends DamageStateProvider
 {
-    default void addState(TagKey<DamageType> tag)
+    default void addTagState(TagKey<DamageType> tag)
     {
-        addState(new TagDamageState(tag));
+        addState(TagDamageState.in(tag));
     }
 
     default void setBypassArmor()
     {
-        addState(DamageTypeTags.BYPASSES_ARMOR);
+        addTagState(DamageTypeTags.BYPASSES_ARMOR);
     }
 
     default void setBypassMagic()
@@ -26,31 +26,31 @@ public interface DefaultDamageStateProvider extends DamageStateProvider
 
     default void setBypassEffects()
     {
-        addState(DamageTypeTags.BYPASSES_EFFECTS);
+        addTagState(DamageTypeTags.BYPASSES_EFFECTS);
     }
 
     default void setBypassResistance()
     {
-        addState(DamageTypeTags.BYPASSES_RESISTANCE);
+        addTagState(DamageTypeTags.BYPASSES_RESISTANCE);
     }
 
     default void setBypassEnchantments()
     {
-        addState(DamageTypeTags.BYPASSES_ENCHANTMENTS);
+        addTagState(DamageTypeTags.BYPASSES_ENCHANTMENTS);
     }
 
     default void setBypassShield()
     {
-        addState(DamageTypeTags.BYPASSES_SHIELD);
+        addTagState(DamageTypeTags.BYPASSES_SHIELD);
     }
 
     default void setBypassCooldown()
     {
-        addState(DamageTypeTags.BYPASSES_COOLDOWN);
+        addTagState(DamageTypeTags.BYPASSES_COOLDOWN);
     }
 
     default void setBypassInvulnerability()
     {
-        addState(DamageTypeTags.BYPASSES_INVULNERABILITY);
+        addTagState(DamageTypeTags.BYPASSES_INVULNERABILITY);
     }
 }
