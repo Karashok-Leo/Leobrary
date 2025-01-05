@@ -1,12 +1,10 @@
 package karashokleo.leobrary.effect.api.util;
 
-import karashokleo.leobrary.effect.api.event.EffectAdded;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -17,10 +15,6 @@ public class EffectUtil
     {
         Map<StatusEffect, StatusEffectInstance> active = entity.getActiveStatusEffects();
         StatusEffectInstance oldEffectInstance = active.get(newEffectInstance.getEffectType());
-
-        CallbackInfoReturnable<Boolean> cir = new CallbackInfoReturnable<>("ForceAddedEffectCallback", true);
-        EffectAdded.EVENT.invoker().onEffectAdded(entity, newEffectInstance, oldEffectInstance, entity, cir);
-        if (cir.isCancelled()) return cir.getReturnValue();
 
         if (oldEffectInstance == null)
         {
