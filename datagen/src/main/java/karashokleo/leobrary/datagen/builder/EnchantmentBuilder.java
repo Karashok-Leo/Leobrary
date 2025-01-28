@@ -12,7 +12,7 @@ import net.minecraft.registry.tag.TagKey;
 @SuppressWarnings("unused")
 public abstract class EnchantmentBuilder<T extends Enchantment>
         extends NamedEntryBuilder<T>
-        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider<Enchantment>
+        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider
 {
     public EnchantmentBuilder(String name, T content)
     {

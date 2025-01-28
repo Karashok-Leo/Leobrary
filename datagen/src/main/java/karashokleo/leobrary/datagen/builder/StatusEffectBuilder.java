@@ -12,7 +12,7 @@ import net.minecraft.registry.tag.TagKey;
 @SuppressWarnings("unused")
 public abstract class StatusEffectBuilder<T extends StatusEffect>
         extends NamedEntryBuilder<T>
-        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider<StatusEffect>
+        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider
 {
     public StatusEffectBuilder(String name, T content)
     {

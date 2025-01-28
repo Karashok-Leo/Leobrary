@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("unused")
 public abstract class ItemBuilder<T extends Item>
         extends NamedEntryBuilder<T>
-        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider<Item>, ModelGeneratorProvider
+        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider, ModelGeneratorProvider
 {
     @Nullable
     protected ItemGroupBuilder group;

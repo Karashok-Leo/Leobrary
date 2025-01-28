@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("unused")
 public abstract class BlockBuilder<T extends Block>
         extends NamedEntryBuilder<T>
-        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider<Block>, ModelGeneratorProvider, BlockLootGeneratorProvider
+        implements DefaultLanguageGeneratorProvider, TagGeneratorProvider, ModelGeneratorProvider, BlockLootGeneratorProvider
 {
     @Nullable
     private BlockItem item;

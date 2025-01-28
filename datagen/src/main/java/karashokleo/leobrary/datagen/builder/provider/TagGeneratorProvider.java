@@ -8,10 +8,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public interface TagGeneratorProvider<T> extends NameSpaceProvider
+public interface TagGeneratorProvider extends NameSpaceProvider
 {
     @NotNull
-    default TagGenerator<T> getTagGenerator(RegistryKey<Registry<T>> registryKey)
+    default <T> TagGenerator<T> getTagGenerator(RegistryKey<Registry<T>> registryKey)
     {
         return Objects.requireNonNull(
                 GeneratorStorageView.getInstance(this.getNameSpace())
