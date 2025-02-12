@@ -1,6 +1,9 @@
 package karashokleo.leobrary.datagen.builder;
 
 import karashokleo.leobrary.datagen.builder.provider.DefaultLanguageGeneratorProvider;
+import karashokleo.leobrary.datagen.object.PotionEffectType;
+import karashokleo.leobrary.datagen.object.PotionItemType;
+import karashokleo.leobrary.datagen.object.PotionSet;
 import karashokleo.leobrary.datagen.util.StringUtil;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -11,58 +14,62 @@ import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumMap;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public abstract class PotionBuilder
         extends NamedEntryBuilder<StatusEffect>
         implements DefaultLanguageGeneratorProvider
 {
-    protected Potion potion;
-    protected Potion longPotion;
-    protected Potion strongPotion;
+    protected final EnumMap<PotionEffectType, Potion> potions = new EnumMap<>(PotionEffectType.class);
 
     public PotionBuilder(String name, StatusEffect content)
     {
         super(name, content);
     }
 
+    @Nullable
+    public Potion potion()
+    {
+        return potions.get(PotionEffectType.NORMAL);
+    }
+
+    @Nullable
+    public Potion longPotion()
+    {
+        return potions.get(PotionEffectType.LONG);
+    }
+
+    @Nullable
+    public Potion strongPotion()
+    {
+        return potions.get(PotionEffectType.STRONG);
+    }
+
     public PotionSet build()
     {
-        return new PotionSet(potion, longPotion, strongPotion);
+        return new PotionSet(potion(), longPotion(), strongPotion());
     }
 
     public PotionBuilder register()
     {
-        return register(3600, 0);
+        return register(PotionEffectType.NORMAL)
+                .register(PotionEffectType.LONG)
+                .register(PotionEffectType.STRONG);
     }
 
-    public PotionBuilder register(int duration, int amplifier)
+    public PotionBuilder register(PotionEffectType effectType)
     {
-        this.potion = Registry.register(Registries.POTION, getId(), new Potion(new StatusEffectInstance(content, duration, amplifier)));
-        return this;
+        return register(effectType.getDefaultDuration(), effectType.getDefaultAmplifier(), effectType);
     }
 
-    public PotionBuilder registerLong()
+    public PotionBuilder register(int duration, int amplifier, PotionEffectType effectType)
     {
-        return registerLong(9600, 0);
-    }
-
-    public PotionBuilder registerLong(int duration, int amplifier)
-    {
-        this.longPotion = Registry.register(Registries.POTION, getId().withPrefixedPath("long_"), new Potion(new StatusEffectInstance(content, duration, amplifier)));
-        return this;
-    }
-
-    public PotionBuilder registerStrong()
-    {
-        return registerStrong(3600, 1);
-    }
-
-    public PotionBuilder registerStrong(int duration, int amplifier)
-    {
-        this.strongPotion = Registry.register(Registries.POTION, getId().withPrefixedPath("strong_"), new Potion(new StatusEffectInstance(content, duration, amplifier)));
+        Potion strongPotion = Registry.register(Registries.POTION, getId().withPrefixedPath(effectType.getLangPrefix()), new Potion(new StatusEffectInstance(content, duration, amplifier)));
+        this.potions.put(effectType, strongPotion);
         return this;
     }
 
@@ -81,7 +88,7 @@ public abstract class PotionBuilder
 
     public PotionBuilder recipe(Potion input, Item item)
     {
-        return recipe(input, item, potion);
+        return recipe(input, item, potion());
     }
 
     public PotionBuilder recipeLong()
@@ -91,12 +98,12 @@ public abstract class PotionBuilder
 
     public PotionBuilder recipeLong(Item item)
     {
-        return recipeLong(potion, item);
+        return recipeLong(potion(), item);
     }
 
     public PotionBuilder recipeLong(Potion input, Item item)
     {
-        return recipe(input, item, longPotion);
+        return recipe(input, item, longPotion());
     }
 
     public PotionBuilder recipeStrong()
@@ -106,12 +113,31 @@ public abstract class PotionBuilder
 
     public PotionBuilder recipeStrong(Item item)
     {
-        return recipeStrong(potion, item);
+        return recipeStrong(potion(), item);
     }
 
     public PotionBuilder recipeStrong(Potion input, Item item)
     {
-        return recipe(input, item, strongPotion);
+        return recipe(input, item, strongPotion());
+    }
+
+    protected String getTranslationKey(PotionItemType itemType, PotionEffectType effectType)
+    {
+        return "item.minecraft.%s.effect.%s%s".formatted(itemType.getLangKey(), effectType.getLangPrefix(), name);
+    }
+
+    public PotionBuilder addEN(String text, PotionItemType itemType, PotionEffectType effectType)
+    {
+        String key = getTranslationKey(itemType, effectType);
+        this.getEnglishGenerator().addText(key, text);
+        return this;
+    }
+
+    public PotionBuilder addZH(String text, PotionItemType itemType, PotionEffectType effectType)
+    {
+        String key = getTranslationKey(itemType, effectType);
+        this.getChineseGenerator().addText(key, text);
+        return this;
     }
 
     public PotionBuilder addEN()
@@ -121,85 +147,60 @@ public abstract class PotionBuilder
 
     public PotionBuilder addEN(String en)
     {
-        return addPotionEN("Potion of " + en)
-                .addSplashEN("Splash Potion of " + en)
-                .addLingeringEN("Lingering Potion of " + en)
-                .addTippedArrowEN("Arrow of " + en);
+        for (PotionEffectType effectType : potions.keySet())
+            for (PotionItemType itemType : PotionItemType.values())
+                addEN(itemType.getEN(en), itemType, effectType);
+        return this;
+    }
+
+    public PotionBuilder addEN(String en, PotionItemType itemType)
+    {
+        for (PotionEffectType effectType : potions.keySet())
+            addEN(itemType.getEN(en), itemType, effectType);
+        return this;
+    }
+
+    public PotionBuilder addEN(String en, PotionEffectType effectType)
+    {
+        for (PotionItemType itemType : PotionItemType.values())
+            addEN(itemType.getEN(en), itemType, effectType);
+        return this;
     }
 
     public PotionBuilder addZH(String zh)
     {
-        return addPotionZH(zh + "药水")
-                .addSplashZH("喷溅型" + zh + "药水")
-                .addLingeringZH("滞留型" + zh + "药水")
-                .addTippedArrowZH(zh + "之箭");
-    }
-
-    public PotionBuilder addPotionEN()
-    {
-        return addPotionEN("Potion of " + StringUtil.defaultName(name));
-    }
-
-    public PotionBuilder addPotionEN(String en)
-    {
-        this.getEnglishGenerator().addText("item.minecraft.potion.effect." + name, en);
+        for (PotionEffectType effectType : potions.keySet())
+            for (PotionItemType itemType : PotionItemType.values())
+                addZH(itemType.getZH(zh), itemType, effectType);
         return this;
     }
 
-    public PotionBuilder addPotionZH(String zh)
+    public PotionBuilder addZH(String zh, PotionItemType itemType)
     {
-        this.getChineseGenerator().addText("item.minecraft.potion.effect." + name, zh);
+        for (PotionEffectType effectType : potions.keySet())
+            addZH(itemType.getZH(zh), itemType, effectType);
         return this;
     }
 
-    public PotionBuilder addSplashEN()
+    public PotionBuilder addZH(String zh, PotionEffectType effectType)
     {
-        return addSplashEN("Splash Potion of " + StringUtil.defaultName(name));
-    }
-
-    public PotionBuilder addSplashEN(String en)
-    {
-        this.getEnglishGenerator().addText("item.minecraft.splash_potion.effect." + name, en);
+        for (PotionItemType itemType : PotionItemType.values())
+            addZH(itemType.getZH(zh), itemType, effectType);
         return this;
     }
 
-    public PotionBuilder addSplashZH(String zh)
+    protected void assertPotion()
     {
-        this.getChineseGenerator().addText("item.minecraft.splash_potion.effect." + name, zh);
-        return this;
+        Objects.requireNonNull(potion(), "Potion not yet registered!");
     }
 
-    public PotionBuilder addLingeringEN()
+    protected void assertLongPotion()
     {
-        return addLingeringEN("Lingering Potion of " + StringUtil.defaultName(name));
+        Objects.requireNonNull(longPotion(), "Long potion not yet registered!");
     }
 
-    public PotionBuilder addLingeringEN(String en)
+    protected void assertStrongPotion()
     {
-        this.getEnglishGenerator().addText("item.minecraft.lingering_potion.effect." + name, en);
-        return this;
-    }
-
-    public PotionBuilder addLingeringZH(String zh)
-    {
-        this.getChineseGenerator().addText("item.minecraft.lingering_potion.effect." + name, zh);
-        return this;
-    }
-
-    public PotionBuilder addTippedArrowEN()
-    {
-        return addTippedArrowEN("Arrow of " + StringUtil.defaultName(name));
-    }
-
-    public PotionBuilder addTippedArrowEN(String en)
-    {
-        this.getEnglishGenerator().addText("item.minecraft.tipped_arrow.effect." + name, en);
-        return this;
-    }
-
-    public PotionBuilder addTippedArrowZH(String zh)
-    {
-        this.getChineseGenerator().addText("item.minecraft.tipped_arrow.effect." + name, zh);
-        return this;
+        Objects.requireNonNull(strongPotion(), "Strong potion not yet registered!");
     }
 }

@@ -1,4 +1,4 @@
-package karashokleo.leobrary.datagen.builder;
+package karashokleo.leobrary.datagen.object;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;

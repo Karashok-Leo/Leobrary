@@ -1,5 +1,7 @@
 package karashokleo.leobrary.datagen.builder;
 
+import karashokleo.leobrary.datagen.object.BlockSet;
+import karashokleo.leobrary.datagen.object.MaterialSet;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;

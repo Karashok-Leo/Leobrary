@@ -12,16 +12,25 @@ import net.minecraft.item.Item;
 import net.minecraft.stat.StatType;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class LanguageGenerator implements CustomGenerator
 {
-
     private final String languageCode;
-    private final Map<Supplier<String>, String> texts = new HashMap<>();
+    private final List<Entry> texts = new ArrayList<>();
+
+    private record Entry(Supplier<String> keyGetter, String value)
+    {
+        public String key()
+        {
+            return keyGetter.get();
+        }
+    }
 
     public LanguageGenerator(String languageCode)
     {
@@ -33,75 +42,78 @@ public class LanguageGenerator implements CustomGenerator
         return languageCode;
     }
 
-    public Map<Supplier<String>, String> getTexts()
+    private void addText(Supplier<String> keyGetter, String value)
     {
-        return texts;
+        texts.add(new Entry(keyGetter, value));
     }
 
     public void addText(String key, String value)
     {
-        texts.put(() -> key, value);
+        addText(() -> key, value);
     }
 
     public void addText(Identifier id, String value)
     {
-        texts.put(id::toTranslationKey, value);
+        addText(id::toTranslationKey, value);
     }
 
     public void addItem(Item item, String s)
     {
-        texts.put(item::getTranslationKey, s);
+        addText(item::getTranslationKey, s);
     }
 
     public void addBlock(Block block, String s)
     {
-        texts.put(block::getTranslationKey, s);
+        addText(block::getTranslationKey, s);
     }
 
     public void addEffect(StatusEffect effect, String s)
     {
-        texts.put(effect::getTranslationKey, s);
+        addText(effect::getTranslationKey, s);
     }
 
     public void addEffectDesc(StatusEffect effect, String s)
     {
-        texts.put(() -> effect.getTranslationKey() + ".desc", s);
+        addText(() -> effect.getTranslationKey() + ".desc", s);
     }
 
     public void addEnchantment(Enchantment enchantment, String s)
     {
-        texts.put(enchantment::getTranslationKey, s);
+        addText(enchantment::getTranslationKey, s);
     }
 
     public void addEnchantmentDesc(Enchantment enchantment, String s)
     {
-        texts.put(() -> enchantment.getTranslationKey() + ".desc", s);
+        addText(() -> enchantment.getTranslationKey() + ".desc", s);
     }
 
     public void addEntityType(EntityType<?> entityType, String value)
     {
-        texts.put(entityType::getTranslationKey, value);
+        addText(entityType::getTranslationKey, value);
     }
 
     public void addAttribute(EntityAttribute entityAttribute, String value)
     {
-        texts.put(entityAttribute::getTranslationKey, value);
+        addText(entityAttribute::getTranslationKey, value);
     }
 
     public void addStatType(StatType<?> statType, String value)
     {
-        texts.put(statType::getTranslationKey, value);
+        addText(statType::getTranslationKey, value);
     }
 
     @Override
     public void generate(FabricDataGenerator.Pack pack)
     {
+        Map<String, String> map = new HashMap<>();
+        texts.forEach(e -> map.put(e.key(), e.value()));
+        texts.clear();
         pack.addProvider((FabricDataOutput output) -> new FabricLanguageProvider(output, languageCode)
         {
             @Override
             public void generateTranslations(TranslationBuilder translationBuilder)
             {
-                getTexts().forEach((sup, s) -> translationBuilder.add(sup.get(), s));
+                map.forEach(translationBuilder::add);
             }
         });
     }

@@ -6,6 +6,7 @@ import karashokleo.leobrary.datagen.builder.provider.ModelGeneratorProvider;
 import karashokleo.leobrary.datagen.builder.provider.TagGeneratorProvider;
 import karashokleo.leobrary.datagen.generator.BlockLootGenerator;
 import karashokleo.leobrary.datagen.generator.TagGenerator;
+import karashokleo.leobrary.datagen.object.BlockSet;
 import karashokleo.leobrary.datagen.util.StringUtil;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;

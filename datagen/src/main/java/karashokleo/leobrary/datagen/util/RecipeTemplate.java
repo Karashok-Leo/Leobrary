@@ -1,7 +1,7 @@
 package karashokleo.leobrary.datagen.util;
 
 import dev.xkmc.l2serial.util.Wrappers;
-import karashokleo.leobrary.datagen.builder.MaterialSet;
+import karashokleo.leobrary.datagen.object.MaterialSet;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
 import net.minecraft.data.server.recipe.*;
