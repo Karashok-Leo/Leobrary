@@ -15,6 +15,7 @@ import net.minecraft.util.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -41,15 +42,23 @@ public abstract class ItemGroupBuilder
         this(name, () -> ItemStack.EMPTY);
     }
 
-    public void add(ItemStack... stacks)
+    public ItemGroupBuilder add(ItemStack... stacks)
     {
         entries.addAll(Arrays.asList(stacks));
+        return this;
     }
 
-    public void add(ItemConvertible... items)
+    public ItemGroupBuilder add(ItemConvertible... items)
     {
         for (ItemConvertible item : items)
             entries.add(item.asItem().getDefaultStack());
+        return this;
+    }
+
+    public ItemGroupBuilder addAll(Collection<ItemStack> stacks)
+    {
+        entries.addAll(stacks);
+        return this;
     }
 
     public ItemGroupBuilder setIcon(Supplier<ItemStack> iconSupplier)
