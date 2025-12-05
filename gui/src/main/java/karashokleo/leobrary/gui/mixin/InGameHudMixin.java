@@ -34,11 +34,11 @@ public abstract class InGameHudMixin
     private int scaledHeight;
 
     @Inject(
-            method = "render",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I"
-            )
+        method = "render",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I"
+        )
     )
     private void inject_renderOverlay(DrawContext context, float tickDelta, CallbackInfo ci)
     {
@@ -46,22 +46,28 @@ public abstract class InGameHudMixin
         while (iterator.hasNext())
         {
             TextureOverlay textureOverlay = iterator.next();
-            if (textureOverlay.condition().shouldRender(client, client.player, context, tickDelta))
-                renderOverlay(context, textureOverlay.texture(), textureOverlay.opacity());
+            float opacity = textureOverlay.opacity().getOpacity(client, client.player, context, tickDelta);
+            if (opacity < 0)
+            {
+                continue;
+            }
+            renderOverlay(context, textureOverlay.texture(), opacity);
         }
     }
 
     @Inject(
-            method = "render",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/hud/InGameHud;renderMountHealth(Lnet/minecraft/client/gui/DrawContext;)V"
-            )
+        method = "render",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/hud/InGameHud;renderMountHealth(Lnet/minecraft/client/gui/DrawContext;)V"
+        )
     )
     private void inject_renderMountHealth(DrawContext context, float tickDelta, CallbackInfo ci)
     {
         Iterator<IGuiOverlay> iterator = GuiOverlayRegistry.iterator();
         while (iterator.hasNext())
+        {
             iterator.next().render((InGameHud) (Object) this, context, tickDelta, this.scaledWidth, this.scaledHeight);
+        }
     }
 }

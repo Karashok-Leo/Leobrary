@@ -10,9 +10,9 @@ public class TextureOverlayRegistry
 {
     private static final List<TextureOverlay> TEXTURE_OVERLAYS = new ArrayList<>();
 
-    public static void register(Identifier texture, float opacity, TextureOverlay.RenderCondition context)
+    public static void register(Identifier texture, TextureOverlay.OpacityProvider context)
     {
-        TEXTURE_OVERLAYS.add(new TextureOverlay(texture, opacity, context));
+        TEXTURE_OVERLAYS.add(new TextureOverlay(texture, context));
     }
 
     public static Iterator<TextureOverlay> iterator()
