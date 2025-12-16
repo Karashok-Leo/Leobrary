@@ -56,6 +56,12 @@ public abstract class DamageSourceMixin implements DefaultDamageStateProvider
     }
 
     @Override
+    public boolean hasState(DamageState state)
+    {
+        return damageStates.contains(state);
+    }
+
+    @Override
     public boolean hasState(Predicate<DamageState> predicate)
     {
         return damageStates.stream().anyMatch(predicate);

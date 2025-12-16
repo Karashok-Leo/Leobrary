@@ -11,6 +11,11 @@ public interface DamageStateProvider
         throw new UnsupportedOperationException();
     }
 
+    default boolean hasState(DamageState state)
+    {
+        throw new UnsupportedOperationException();
+    }
+
     default boolean hasState(Predicate<DamageState> predicate)
     {
         throw new UnsupportedOperationException();
