@@ -23,4 +23,9 @@ public interface DamageAccess
     float getOriginalDamage();
 
     float getModifiedDamage(float originalDamage);
+
+    default float getModifiedDamage()
+    {
+        return getModifiedDamage(getOriginalDamage());
+    }
 }

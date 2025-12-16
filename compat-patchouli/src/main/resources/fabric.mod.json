@@ -19,5 +19,5 @@
 		"fabricloader": "*",
 		"fabric-api": "*"
 	},
-	"accessWidener" : "leobrary-compat-patchouli.accesswidener"
+	"accessWidener" : "leobrary-compat-patchouli.classtweaker"
 }

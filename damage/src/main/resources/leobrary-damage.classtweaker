@@ -1,0 +1,3 @@
+classTweaker v1 named
+
+transitive-inject-interface net/minecraft/entity/damage/DamageSource karashokleo/leobrary/damage/api/state/DefaultDamageStateProvider

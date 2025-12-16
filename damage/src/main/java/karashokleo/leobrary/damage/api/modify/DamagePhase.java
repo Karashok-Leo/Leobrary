@@ -45,21 +45,21 @@ public enum DamagePhase
      */
     APPLY;
 
-    private final Map<Integer, Consumer<DamageAccess>> MODIFIERS = new TreeMap<>();
+    private final Map<Integer, Consumer<DamageAccess>> LISTENERS = new TreeMap<>();
 
-    public void registerModifier(int priority, Consumer<DamageAccess> modifier)
+    public void addListener(int priority, Consumer<DamageAccess> listener)
     {
-        while (MODIFIERS.containsKey(priority))
+        while (LISTENERS.containsKey(priority))
             priority++;
-        MODIFIERS.put(priority, modifier);
+        LISTENERS.put(priority, listener);
     }
 
     public float getFinalAmount(LivingEntity entity, DamageSource source, float amount)
     {
         DamageAccessImpl conditional = new DamageAccessImpl(entity, source, amount);
-        for (Consumer<DamageAccess> consumer : MODIFIERS.values())
+        for (Consumer<DamageAccess> consumer : LISTENERS.values())
             consumer.accept(conditional);
-        return conditional.getModifiedDamage(amount);
+        return conditional.getModifiedDamage();
     }
 
     record DamageAccessImpl(

@@ -6,17 +6,38 @@ import java.util.function.Predicate;
 
 public interface DamageStateProvider
 {
-    Collection<DamageState> getStates();
+    default Collection<DamageState> getStates()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-    boolean hasState(Predicate<DamageState> predicate);
+    default boolean hasState(Predicate<DamageState> predicate)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-    Optional<DamageState> getState(Predicate<DamageState> predicate);
+    default Optional<DamageState> getState(Predicate<DamageState> predicate)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-    <T extends DamageState> Optional<T> getState(Class<T> clazz,Predicate<T> predicate);
+    default <T extends DamageState> Optional<T> getState(Class<T> clazz, Predicate<T> predicate)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-    void addState(DamageState damageState);
+    default void addState(DamageState damageState)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-    void removeState(Predicate<DamageState> predicate);
+    default void removeState(Predicate<DamageState> predicate)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-    void clearStates();
+    default void clearStates()
+    {
+        throw new UnsupportedOperationException();
+    }
 }

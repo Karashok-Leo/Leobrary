@@ -1,5 +1,5 @@
 loom {
-    accessWidenerPath = file("src/main/resources/leobrary-effect.accesswidener")
+    accessWidenerPath = file("src/main/resources/leobrary-effect.classtweaker")
 }
 
 repositories {

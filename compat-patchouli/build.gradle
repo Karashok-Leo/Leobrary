@@ -1,5 +1,5 @@
 loom {
-    accessWidenerPath = file("src/main/resources/leobrary-compat-patchouli.accesswidener")
+    accessWidenerPath = file("src/main/resources/leobrary-compat-patchouli.classtweaker")
 }
 
 repositories {

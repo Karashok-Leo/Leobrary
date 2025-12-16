@@ -22,5 +22,5 @@
   "mixins": [
     "leobrary-effect.mixins.json"
   ],
-  "accessWidener" : "leobrary-effect.accesswidener"
+  "accessWidener" : "leobrary-effect.classtweaker"
 }

@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.14-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -49,21 +49,21 @@ subprojects {
     apply plugin: "maven-publish"
 
     project.group = rootProject.group
-    project.archivesBaseName = rootProject.archivesBaseName + "-" + project.name
+    project.base.archivesName = "${rootProject.base.archivesName.get()}-${project.name}"
 
     loom {
-        mods.register(project.archivesBaseName) {
+        mods.register(base.archivesName.get()) {
             sourceSet sourceSets.main
         }
-//        File aw = file("src/main/resources/${project.archivesBaseName}.accesswidener")
+//        File aw = file("src/main/resources/${base.archivesName.get()}.accesswidener")
 //        if (aw.exists())
 //            accessWidenerPath.set(aw)
     }
 
     processResources {
 
-        into("assets/${rootProject.archivesBaseName}") {
-            from(rootProject.file("src/main/resources/assets/${rootProject.archivesBaseName}/icon.png"))
+        into("assets/${rootProject.base.archivesName.get()}") {
+            from(rootProject.file("src/main/resources/assets/${rootProject.base.archivesName.get()}/icon.png"))
         }
 
         File meta = project.file("src/main/resources/fabric.mod.json")
@@ -73,7 +73,7 @@ subprojects {
             }
 
         Map<String, ?> properties = [
-                mod_id           : project.archivesBaseName,
+                mod_id           : base.archivesName.get(),
                 mod_version      : version,
                 mod_name         : mod_name + "-" + project.name,
                 java_version     : java.sourceCompatibility,

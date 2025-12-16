@@ -19,15 +19,8 @@
     "fabricloader": "*",
     "fabric-api": "*"
   },
+  "accessWidener" : "leobrary-damage.classtweaker",
   "mixins": [
     "leobrary-damage.mixins.json"
-  ],
-  "custom": {
-    "loom:injected_interfaces": {
-      "net/minecraft/class_1282": [
-        "karashokleo/leobrary/damage/api/state/DamageStateProvider",
-        "karashokleo/leobrary/damage/api/state/DefaultDamageStateProvider"
-      ]
-    }
-  }
+  ]
 }
