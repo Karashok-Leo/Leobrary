@@ -14,4 +14,24 @@ public interface DamageModifier
     {
         return originalDamage -> originalDamage * operator;
     }
+
+    static DamageModifier reduce(float operator)
+    {
+        return originalDamage -> Math.max(originalDamage - operator, 0);
+    }
+
+    static DamageModifier zero(float operator)
+    {
+        return originalDamage -> 0;
+    }
+
+    static DamageModifier min(float operator)
+    {
+        return originalDamage -> Math.min(originalDamage, operator);
+    }
+
+    static DamageModifier max(float operator)
+    {
+        return originalDamage -> Math.max(originalDamage, operator);
+    }
 }
