@@ -5,6 +5,11 @@ public interface DamageModifier
 {
     float modify(float originalDamage);
 
+    static DamageModifier zero()
+    {
+        return originalDamage -> 0;
+    }
+
     static DamageModifier add(float operator)
     {
         return originalDamage -> originalDamage + operator;
@@ -18,11 +23,6 @@ public interface DamageModifier
     static DamageModifier reduce(float operator)
     {
         return originalDamage -> Math.max(originalDamage - operator, 0);
-    }
-
-    static DamageModifier zero(float operator)
-    {
-        return originalDamage -> 0;
     }
 
     static DamageModifier min(float operator)
