@@ -27,11 +27,11 @@ public interface DamageModifier
 
     static DamageModifier min(float operator)
     {
-        return originalDamage -> Math.min(originalDamage, operator);
+        return originalDamage -> Math.max(originalDamage, operator);
     }
 
     static DamageModifier max(float operator)
     {
-        return originalDamage -> Math.max(originalDamage, operator);
+        return originalDamage -> Math.min(originalDamage, operator);
     }
 }
