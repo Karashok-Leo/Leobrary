@@ -1,11 +1,11 @@
 package karashokleo.leobrary.damage.mixin;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import karashokleo.leobrary.damage.accessor.DamageCallDepthAccessor;
 import karashokleo.leobrary.damage.api.event.DamageSourceCreateCallback;
 import karashokleo.leobrary.damage.api.state.DamageState;
 import karashokleo.leobrary.damage.api.state.DefaultDamageStateProvider;
 import karashokleo.leobrary.damage.api.state.TagDamageState;
-import karashokleo.leobrary.damage.mixin.accessor.DamageCallDepthAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;

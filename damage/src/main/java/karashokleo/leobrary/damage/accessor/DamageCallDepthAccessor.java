@@ -1,4 +1,4 @@
-package karashokleo.leobrary.damage.mixin.accessor;
+package karashokleo.leobrary.damage.accessor;
 
 import org.jetbrains.annotations.ApiStatus;
 
